@@ -158,7 +158,7 @@ server <- function(input, output){
                          "comp 2" = 0)
       colnames(cont) = c("comp 1", "comp 2")
       
-      cont$Majority.protein.IDs = c("all other drugs", drug_of_interest)
+      cont$Majority.protein.IDs = c(drug_of_interest, "all other drugs")
       cont$label <- cont$Majority.protein.IDs
 
       load.opls <- rbind(load.opls, cont)
