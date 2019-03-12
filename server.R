@@ -293,8 +293,7 @@ server <- function(input, output){
   })
   
   output$dynamicTitle2 <- renderText({
-    drug_of_interest = input$columns
-    if(nchar(drug_of_interest) > 0){
+    if(!is.null(drug_of_interest)){
       sprintf("OPLS model for %s", input$columns)
     }
     else{
