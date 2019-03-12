@@ -244,9 +244,9 @@ server <- function(input, output){
         
         g <- ggplot(s, aes(x = Treatment, y = mean.value, fill = mark)) +
           geom_bar(stat = "identity", position = "dodge") +
-          geom_errorbar(aes(ymin = mean.value - sd.value, ymax = mean.value + sd.value), width = 0.1, position = position_dodge(0.1)) +
+          geom_errorbar(aes(ymin = mean.value - sd.value, ymax = mean.value + sd.value), width = 0.25, position = position_dodge(0.1)) +
           ggtitle(load.opls$ID) +
-          ylab("mean expression +/- sd") +
+          ylab("mean expression +/- SD") +
           scale_fill_manual(values = c("grey", "red")) +
           ylim(0, max((s$mean.value + s$sd.value)) * 1.2) +
           theme_classic() +
