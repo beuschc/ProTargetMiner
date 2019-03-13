@@ -293,23 +293,13 @@ server <- function(input, output){
   })
   
   output$dynamicTitle2 <- renderText({
-    if(!is.null(drug_of_interest)){
-      sprintf("OPLS model for %s", input$columns)
-    }
-    else{
-      sprintf("Please select your contrast")
-    }
-    
+    req(input$columns)
+    sprintf("OPLS model for %s", input$columns)
   })
   
   output$dynamicTitle3 <- renderText({
-    if(!is.null(drug_of_interest)){
-      sprintf("OPLS model ranking for %s", input$columns)
-    }
-    else{
-      sprintf("Please select your contrast")
-    }
-    
+    req(input$columns)
+    sprintf("OPLS model for %s", input$columns)
   })
   
   output$dynamicTitle4 <- renderText({
