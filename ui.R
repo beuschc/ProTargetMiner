@@ -34,7 +34,7 @@ ui <- dashboardPage(
 
     uiOutput("choose_columns"),
     
-    downloadButton("download", "Download OPLS results"),
+    downloadButton("download", "Download PLSDA results"),
     
     h1(""),
   
