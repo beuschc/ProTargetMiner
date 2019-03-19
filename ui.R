@@ -102,14 +102,14 @@ ui <- dashboardPage(
                            h1(""),  
                            h1(""),
                            h1(textOutput('dynamicTitle2')),
-                           plotlyOutput("OPLS") %>% withSpinner(),
+                           plotlyOutput("PLSDA") %>% withSpinner(),
                            
                            verbatimTextOutput("click"),
                            
                            h1(""),
                            h1(""),
                            h1(textOutput('dynamicTitle3')),
-                           dataTableOutput("top_opls", width = "100%") %>% withSpinner(),
+                           dataTableOutput("top_plsda", width = "100%") %>% withSpinner(),
                            
                            h1(""),
                            h1(""),
