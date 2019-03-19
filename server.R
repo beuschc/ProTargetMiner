@@ -234,10 +234,16 @@ server <- function(input, output){
         
         data$Treatment <- str_sub(data$Condition, 1, str_length(data$Condition)-2)
         
+        s_control <- data %>%
+          filter(Treatment == "Control") %>%
+          summarise(mean.value.control = mean(value, na.rm = T))
+        
         s <- data %>%
+          mutate(mean.value.control = s_control$mean.value.control) %>%
+          mutate(normalized.value = value/mean.value.control) %>%
           group_by(Treatment) %>%
-          summarise(mean.value = mean(value, na.rm = T),
-                    sd.value = sd(value, na.rm = T))
+          summarise(mean.value = mean(normalized.value, na.rm = T),
+                    sd.value = sd(normalized.value, na.rm = T))
         
         s$mark <- ifelse(s$Treatment == drug_of_interest, 1, 0)
         s$mark <- as.factor(s$mark)
@@ -246,7 +252,7 @@ server <- function(input, output){
           geom_bar(stat = "identity", position = "dodge") +
           geom_errorbar(aes(ymin = mean.value - sd.value, ymax = mean.value + sd.value), width = 0.25, position = position_dodge(0.1)) +
           ggtitle(load.plsda$ID) +
-          ylab("mean expression +/- SD") +
+          ylab("Mean Fold Change Compared To Control +/- SD") +
           scale_fill_manual(values = c("grey", "red")) +
           ylim(0, max((s$mean.value + s$sd.value)) * 1.2) +
           theme_classic() +
