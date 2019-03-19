@@ -153,7 +153,30 @@ server <- function(input, output){
       load.plsda <- as.data.frame(plsda.res$loadings$X)
       load.plsda$Majority.protein.IDs <- rownames(load.plsda)
       load.plsda$label <- "Protein"
+       
+      orientation_min <- load.opls[which(load.opls$`comp 1` == min(load.opls$`comp 1`, na.rm = T)),]
+      orientation_max <- load.opls[which(load.opls$`comp 1` == max(load.opls$`comp 1`, na.rm = T)),]
 
+      d <- df() %>%
+        dplyr::select(c(Majority.protein.IDs, contains(drug_of_interest)))
+      
+      d_min <- d %>%
+        dplyr::filter(Majority.protein.IDs == orientation_min$Majority.protein.IDs) %>%
+        gather(Treatment, value, 2:4) %>%
+        summarise(mean.value = mean(value, na.rm = T)) 
+      
+      d_max <- d %>%
+        dplyr::filter(Majority.protein.IDs == orientation_max$Majority.protein.IDs) %>%
+        gather(Treatment, value, 2:4) %>%
+        summarise(mean.value = mean(value, na.rm = T))
+      
+      print(d_min)
+      print(d_max)
+      
+      if(d_min > d_max){
+        load.opls$`comp 1` <- - load.opls$`comp 1`
+      }
+       
       cont <- data.frame("comp 1" = c(min(load.plsda$`comp 1`) * 1.5, max(load.plsda$`comp 1`) * 1.5),
                          "comp 2" = 0)
       colnames(cont) = c("comp 1", "comp 2")
