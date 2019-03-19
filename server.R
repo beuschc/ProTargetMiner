@@ -120,7 +120,7 @@ server <- function(input, output){
     }
   })
   
-  opls.df <- reactive({
+ plsda.df <- reactive({
     req(input$columns)
     drug_of_interest = input$columns
     data <- df()
@@ -171,16 +171,16 @@ server <- function(input, output){
       suppressWarnings(load.plsda <- info %>%
                          right_join(load.plsda, by = "Majority.protein.IDs"))
       
-      return(load.opls)
+      return(load.plsda)
     }
     else{
       return(NULL)
     }
   })
   
-  output$OPLS <- renderPlotly({
+  output$PLSDA <- renderPlotly({
     req(plsda.df())
-    load.opls <- plsda.df()
+    load.plsda <- plsda.df()
     if(is.data.frame(load.plsda)){
       load.plsda$pointsize <- ifelse(load.plsda$label != "Protein", 1.5, 1)
       
@@ -207,7 +207,7 @@ server <- function(input, output){
   })
   
   output$POI <- renderPlotly({
-    req(opls.df())
+    req(plsda.df())
     req(input$columns)
     req(df())
     load.plsda <- plsda.df()
@@ -225,7 +225,7 @@ server <- function(input, output){
                               paste("Peptides", load.plsda$Peptides, sep = " = "),
                               paste("Sequence coverage", load.plsda$Sequence.coverage, sep = " = "), sep = "\n")
         
-        load.opls <- load.opls %>%
+        load.plsda <- load.plsda %>%
           filter(Majority.protein.IDs == poi.df)
         
         data <- data %>%
@@ -245,7 +245,7 @@ server <- function(input, output){
         g <- ggplot(s, aes(x = Treatment, y = mean.value, fill = mark)) +
           geom_bar(stat = "identity", position = "dodge") +
           geom_errorbar(aes(ymin = mean.value - sd.value, ymax = mean.value + sd.value), width = 0.25, position = position_dodge(0.1)) +
-          ggtitle(load.opls$ID) +
+          ggtitle(load.plsda$ID) +
           ylab("mean expression +/- SD") +
           scale_fill_manual(values = c("grey", "red")) +
           ylim(0, max((s$mean.value + s$sd.value)) * 1.2) +
@@ -265,11 +265,11 @@ server <- function(input, output){
     }
   })
   
-  output$top_opls <- DT::renderDataTable({
-    req(opls.df())
-    load.opls <- opls.df()
+  output$top_plsda <- DT::renderDataTable({
+    req(plsda.df())
+    load.plsda <- plsda.df()
     if(is.data.frame(load.plsda)){
-      d <- load.opls %>%
+      d <- load.plsda %>%
         dplyr::arrange(`comp 1`) %>%
         dplyr::filter(label == "Protein") %>%
         dplyr::select(-label)
