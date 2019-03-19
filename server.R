@@ -272,7 +272,7 @@ server <- function(input, output){
           geom_bar(stat = "identity", position = "dodge") +
           geom_errorbar(aes(ymin = mean.value - sd.value, ymax = mean.value + sd.value), width = 0.25, position = position_dodge(0.1)) +
           ggtitle(load.plsda$ID) +
-          ylab("Mean Fold Change Compared To Control +/- SD") +
+          ylab("Mean Ratio Compared To Control +/- SD") +
           scale_fill_manual(values = c("grey", "red")) +
           ylim(0, max((s$mean.value + s$sd.value)) * 1.2) +
           theme_classic() +
