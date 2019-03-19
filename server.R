@@ -10,7 +10,7 @@ server <- function(input, output){
    
   df <- NULL
   selected <- NULL
-  opls.df <- NULL
+  plsda.df <- NULL
   ds <- NULL
   drug_of_interest <- NULL
   df.merge <- NULL
@@ -150,26 +150,26 @@ server <- function(input, output){
       plsda.res <- mixOmics::plsda(scale(X), Y, ncomp = 2)
       wyloadings <- plsda.res$loadings$Y[, 1]
       
-      load.opls <- as.data.frame(plsda.res$loadings$X)
-      load.opls$Majority.protein.IDs <- rownames(load.opls)
-      load.opls$label <- "Protein"
+      load.plsda <- as.data.frame(plsda.res$loadings$X)
+      load.plsda$Majority.protein.IDs <- rownames(load.plsda)
+      load.plsda$label <- "Protein"
 
-      cont <- data.frame("comp 1" = c(min(load.opls$`comp 1`) * 1.5, max(load.opls$`comp 1`) * 1.5),
+      cont <- data.frame("comp 1" = c(min(load.plsda$`comp 1`) * 1.5, max(load.plsda$`comp 1`) * 1.5),
                          "comp 2" = 0)
       colnames(cont) = c("comp 1", "comp 2")
       
       cont$Majority.protein.IDs = c("all other drugs", drug_of_interest)
       cont$label <- cont$Majority.protein.IDs
 
-      load.opls <- rbind(load.opls, cont)
+      load.plsda <- rbind(load.plsda, cont)
       
-      load.opls$`comp 1` <- load.opls$`comp 1`
+      load.plsda$`comp 1` <- load.plsda$`comp 1`
       
       info <- df()
       info <- info[,c(1:5)]
       
-      suppressWarnings(load.opls <- info %>%
-                         right_join(load.opls, by = "Majority.protein.IDs"))
+      suppressWarnings(load.plsda <- info %>%
+                         right_join(load.plsda, by = "Majority.protein.IDs"))
       
       return(load.opls)
     }
@@ -179,25 +179,25 @@ server <- function(input, output){
   })
   
   output$OPLS <- renderPlotly({
-    req(opls.df())
-    load.opls <- opls.df()
-    if(is.data.frame(load.opls)){
-      load.opls$pointsize <- ifelse(load.opls$label != "Protein", 1.5, 1)
+    req(plsda.df())
+    load.opls <- plsda.df()
+    if(is.data.frame(load.plsda)){
+      load.plsda$pointsize <- ifelse(load.plsda$label != "Protein", 1.5, 1)
       
-      load.opls$ID <- paste(paste("Majority protein IDs", load.opls$Majority.protein.IDs, sep = " = "),
-                            paste("Gene names", load.opls$Gene.names, sep = " = "),
-                            paste("Protein names", load.opls$Protein.names, sep = " = "),
-                            paste("Peptides", load.opls$Peptides, sep = " = "),
-                            paste("Sequence coverage", load.opls$Sequence.coverage, sep = " = "), sep = "\n")
+      load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$Majority.protein.IDs, sep = " = "),
+                            paste("Gene names", load.plsda$Gene.names, sep = " = "),
+                            paste("Protein names", load.plsda$Protein.names, sep = " = "),
+                            paste("Peptides", load.plsda$Peptides, sep = " = "),
+                            paste("Sequence coverage", load.plsda$Sequence.coverage, sep = " = "), sep = "\n")
       
-      g <- ggplot(load.opls) +
+      g <- ggplot(load.plsda) +
         geom_hline(yintercept = 0) +
         geom_vline(xintercept = 0) +
         geom_point(aes(x = `comp 1`, y = `comp 2`, colour = `label`, group = `ID`, size = `pointsize`), alpha = 0.5) +
         theme_classic()+
         theme(legend.position = "none")
       
-      ggplotly(g, source = "OPLS.plot",
+      ggplotly(g, source = "PLSDA.plot",
                tooltip = c("group")) %>%
         layout(dragmode = "select")
     }
@@ -210,20 +210,20 @@ server <- function(input, output){
     req(opls.df())
     req(input$columns)
     req(df())
-    load.opls <- opls.df()
+    load.plsda <- plsda.df()
     drug_of_interest <- input$columns
     data <- df()[,-c(2:5)]
-    if(is.data.frame(load.opls)){
-      poi <- event_data("plotly_click", source = "OPLS.plot")
+    if(is.data.frame(load.plsda)){
+      poi <- event_data("plotly_click", source = "PLSDA.plot")
       
       if(!is.null(poi)){
-        poi.df <- load.opls$Majority.protein.IDs[(poi$pointNumber + 1)]
+        poi.df <- load.plsda$Majority.protein.IDs[(poi$pointNumber + 1)]
         
-        load.opls$ID <- paste(paste("Majority protein IDs", load.opls$Majority.protein.IDs, sep = " = "),
-                              paste("Gene names", load.opls$Gene.names, sep = " = "),
-                              paste("Protein names", load.opls$Protein.names, sep = " = "),
-                              paste("Peptides", load.opls$Peptides, sep = " = "),
-                              paste("Sequence coverage", load.opls$Sequence.coverage, sep = " = "), sep = "\n")
+        load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$Majority.protein.IDs, sep = " = "),
+                              paste("Gene names", load.plsda$Gene.names, sep = " = "),
+                              paste("Protein names", load.plsda$Protein.names, sep = " = "),
+                              paste("Peptides", load.plsda$Peptides, sep = " = "),
+                              paste("Sequence coverage", load.plsda$Sequence.coverage, sep = " = "), sep = "\n")
         
         load.opls <- load.opls %>%
           filter(Majority.protein.IDs == poi.df)
@@ -268,7 +268,7 @@ server <- function(input, output){
   output$top_opls <- DT::renderDataTable({
     req(opls.df())
     load.opls <- opls.df()
-    if(is.data.frame(load.opls)){
+    if(is.data.frame(load.plsda)){
       d <- load.opls %>%
         dplyr::arrange(`comp 1`) %>%
         dplyr::filter(label == "Protein") %>%
@@ -294,17 +294,17 @@ server <- function(input, output){
   
   output$dynamicTitle2 <- renderText({
     req(input$columns)
-    sprintf("OPLS model for %s", input$columns)
+    sprintf("PLSDA model for %s", input$columns)
   })
   
   output$dynamicTitle3 <- renderText({
     req(input$columns)
-    sprintf("OPLS model for %s", input$columns)
+    sprintf("PLSDA model for %s", input$columns)
   })
   
   output$dynamicTitle4 <- renderText({
     if(nchar(input$columns) > 0){
-      sprintf("OPLS model ranking for %s", input$columns)
+      sprintf("PLSDA model ranking for %s", input$columns)
     }
     else{
       sprintf("Please select your protein of interest")
@@ -318,7 +318,7 @@ server <- function(input, output){
       paste(file, "_", input$columns, ".tsv", sep = "")
       }, 
     content = function(file.name){
-      write_tsv(x = opls.df(), path = file.name)
+      write_tsv(x = plsda.df(), path = file.name)
     }
   )
 }
