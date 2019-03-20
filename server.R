@@ -344,7 +344,9 @@ server <- function(input, output){
       paste(file, "_", input$columns, ".tsv", sep = "")
       }, 
     content = function(file.name){
-      write_tsv(x = plsda.df(), path = file.name)
+      write_tsv(x = plsda.df() %>%
+                filter(label == "Protein"),
+                path = file.name)
     }
   )
 }
