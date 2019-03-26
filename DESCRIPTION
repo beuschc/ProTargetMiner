@@ -1,0 +1,7 @@
+Package: ProTargetMiner
+Type: Package
+Title: ProTargetMiner: a proteome signature library of anticancer molecules for functional discovery
+Version: 0.1.0
+Author: Christian Beusch
+Maintainer: Christian Beusch <christian.beusch@ki.se>
+Description:
