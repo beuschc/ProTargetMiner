@@ -1,11 +1,3 @@
-require(shiny)
-require(plotly)
-require(tidyverse)
-require(DT)
-require(shinycssloaders)
-require(mixOmics)
-require(shinydashboard)
-
 server <- function(input, output){
    
   df <- NULL
