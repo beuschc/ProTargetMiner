@@ -1,12 +1,4 @@
 server <- function(input, output){
-   require(shiny)
-require(plotly)
-require(tidyverse)
-require(DT)
-require(shinycssloaders)
-require(mixOmics)
-require(shinydashboard)
-   
   df <- NULL
   selected <- NULL
   plsda.df <- NULL
