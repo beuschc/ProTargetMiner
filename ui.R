@@ -21,11 +21,11 @@ ui <- dashboardPage(
                    selected = 1),
       
       conditionalPanel(condition = "input.radio == 4",
-                        fileInput("file1", "Please choose txt file",
+                        fileInput("file1", "Please choose csv file",
                                   accept = c(
-                                    "text",
-                                    "text",
-                                    ".txt"))),
+                                    "text/csv",
+                                    "text/comma-separated-values,text/plain",
+                                    ".csv"))),
     
     conditionalPanel(condition = "input.radio == 4",
                      checkboxGroupInput("checkGroup", label = h5("Please select data set(s) to merge with"), 
