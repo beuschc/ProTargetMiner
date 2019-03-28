@@ -37,13 +37,13 @@ server <- function(input, output){
   df <- reactive({
     ds <- data.set()
     if(is.character(ds)){
-      data <- read_table(ds)
+      data <- read.csv2(ds, header = T)
       
       if(input$radio == 4 & length(input$checkGroup) > 0){
         for(i in 1:length(input$checkGroup)){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
           
-          mer <- read_table(ds) %>%
+          mer <- read.csv2(ds, header = T) %>%
             dplyr::select(-c("Majority.protein.IDs", "Protein.names", "Peptides", "Sequence.coverage...."))
           colnames(mer) <- paste(dt$data.set[which(dt$code == input$checkGroup[i])], colnames(mer), sep = "_")
           colnames(mer)[1] <- "Gene.names"
