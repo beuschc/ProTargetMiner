@@ -16,20 +16,20 @@ ui <- dashboardPage(
   dashboardSidebar(
     width = 350,
       radioButtons("radio", label = h3("Select your proteomics data set"),
-                   choices = list("original ProTargetMiner (n=56)" = 5, "A459 (n=9)" = 1,
+                   choices = list("original ProTargetMiner (n=56)" = 5, "A549 (n=9)" = 1,
                                   "MCF7 (n=9)" = 2, "RKO (n=9)" = 3, "own data set" = 4), 
                    selected = 1),
       
       conditionalPanel(condition = "input.radio == 4",
-                        fileInput("file1", "Please choose csv file",
+                        fileInput("file1", "Please choose txt file",
                                   accept = c(
-                                    "text/csv",
-                                    "text/comma-separated-values,text/plain",
-                                    ".csv"))),
+                                    "text",
+                                    "text",
+                                    ".txt"))),
     
     conditionalPanel(condition = "input.radio == 4",
                      checkboxGroupInput("checkGroup", label = h5("Please select data set(s) to merge with"), 
-                                        choices = c("A459 (n=9)" = 1, "MCF7 (n=9)" = 2, "RKO (n=9)" = 3),
+                                        choices = c("A549 (n=9)" = 1, "MCF7 (n=9)" = 2, "RKO (n=9)" = 3),
                                         selected = NULL)),
 
     uiOutput("choose_columns"),
