@@ -16,8 +16,8 @@ server <- function(input, output){
   inp <- NULL
   
   dt <- data.frame(code = c(1, 2, 3),
-                   data.set = c("A459", "MCF7", "RKO"),
-                      file.location = c("data/MCf7_dummy.csv", "data/MCf7_dummy.csv", "data/MCf7_dummy.csv"))
+                   data.set = c("A549", "MCF7", "RKO"),
+                      file.location = c("data/A549_deep_proteome.txt", "data/MCF7_deep_proteome.txt", "data/RKO_deep_proteome.txt"))
 
   data.set <- reactive({
     if(is.character(input$radio)){
@@ -37,13 +37,13 @@ server <- function(input, output){
   df <- reactive({
     ds <- data.set()
     if(is.character(ds)){
-      data <- read.csv2(ds, header = T)
+      data <- read_table(ds, header = T)
       
       if(input$radio == 4 & length(input$checkGroup) > 0){
         for(i in 1:length(input$checkGroup)){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
           
-          mer <- read.csv2(ds, header = T) %>%
+          mer <- read_table(ds, header = T) %>%
             dplyr::select(-c("Majority.protein.IDs", "Protein.names", "Peptides", "Sequence.coverage...."))
           colnames(mer) <- paste(dt$data.set[which(dt$code == input$checkGroup[i])], colnames(mer), sep = "_")
           colnames(mer)[1] <- "Gene.names"
@@ -87,7 +87,7 @@ server <- function(input, output){
     
     if(!is.null(d)){
       good <- which(!grepl("MCF7", colnames(d)) &
-                      !grepl("A459", colnames(d)) &
+                      !grepl("A549", colnames(d)) &
                     !grepl("RKO", colnames(d)))
       datatable(d[,good], options = list(scrollX = T))
     }
@@ -100,7 +100,7 @@ server <- function(input, output){
     data <- df()
     if(is.data.frame(data)){
       good <- which(!grepl("MCF7", colnames(data)) &
-                      !grepl("A459", colnames(data)) &
+                      !grepl("A549", colnames(data)) &
                       !grepl("RKO", colnames(data)))
       data <- data[,good]
       data <- data[,-c(1:5)]
