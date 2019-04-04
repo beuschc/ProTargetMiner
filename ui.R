@@ -38,9 +38,7 @@ ui <- dashboardPage(
     
     h1(""),
   
-    p("Please cite:",
-      strong("ProTargetMiner: A proteome signature library of anticancer molecules for functional discovery")
-      )
+    p(strong(uiOutput("citation")))
     
     ),
     dashboardBody(
