@@ -114,8 +114,7 @@ ui <- dashboardPage(
                            h1(""),
                            h1(""),
                            plotlyOutput("POI")
-                           ),
-                  tabPanel("Help")
+                           )
       )
     )
 )
