@@ -342,4 +342,10 @@ server <- function(input, output){
                 path = file.name)
     }
   )
+  
+  url <- a("ProTargetMiner: A proteome signature library of anticancer molecules for functional discovery",
+           href = "https://www.biorxiv.org/content/10.1101/421115v1")
+  output$citation <- renderUI({
+    tagList("Please cite:", url)
+  })
 }
