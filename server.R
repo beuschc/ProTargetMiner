@@ -133,6 +133,7 @@ server <- function(input, output){
       rownames(data) <- NULL
       
       data$Drug <- str_sub(data$Sample, 1, str_length(data$Sample)-2)
+      print(data$Drug)
       #data <- data %>%
       #  filter(Drug != "Control")
       
