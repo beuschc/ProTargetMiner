@@ -42,13 +42,13 @@ server <- function(input, output){
       if(input$radio == 4 & length(input$checkGroup) > 0){
         for(i in 1:length(input$checkGroup)){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
-          
-          print(dt$data.set[which(dt$code == input$checkGroup[i])])
-          
+                    
           mer <- read.csv(ds, header = T) %>%
             dplyr::select(-c("Majority.protein.IDs", "Protein.names", "Peptides", "Sequence.coverage...."))
           colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = "_")
           colnames(mer)[1] <- "Gene.names"
+          
+          print(colnames(mer))
 
           suppressWarnings(data <- data %>%
             right_join(mer, by = "Gene.names"))
