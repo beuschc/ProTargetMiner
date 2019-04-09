@@ -137,7 +137,7 @@ server <- function(input, output){
       #  filter(Drug != "Control")
       
       drugs <- data$Drug
-      print(data)
+      write_tsv(data, "test.tsv")
       dmatrix <- data %>%
         dplyr::select(-Drug, -Sample)
       
