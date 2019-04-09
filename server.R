@@ -50,6 +50,8 @@ server <- function(input, output){
           
           suppressWarnings(data <- data %>%
             right_join(mer, by = "Gene.names"))
+          
+          data <- data[!duplicated(data$Majority.protein.IDs),]
         }
       }
       
