@@ -105,14 +105,7 @@ server <- function(input, output){
       data <- data[,good]
       data <- data[,-c(1:5)]
       colnames <- str_sub(colnames(data), 1, str_length(colnames(data))-2)
-
-      w <- which(colnames == "Control")
-      if(length(w) > 0){
-        colnames <- colnames[-w]
-      }else{
-        colnames <- colnames
-      }
-
+      
       selectInput("columns", "Please choose your compound of interest", 
                   choices  = colnames,
                   selected = colnames)
