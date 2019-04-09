@@ -125,6 +125,7 @@ server <- function(input, output){
     data <- df()
 
     if(is.data.frame(data) & !is.null(drug_of_interest)){
+      print(1)
       names <- data$Majority.protein.IDs
       data <- data[,-c(2:5)]
       data <- as.data.frame(t(data[,-1]))
@@ -139,14 +140,10 @@ server <- function(input, output){
       drugs <- data$Drug
       dmatrix <- data %>%
         dplyr::select(-Drug, -Sample)
-     
-      print(dim(dmatrix))
-      
+          
       res <- data.frame(id = names(dmatrix))
       resrank <- data.frame(id = names(dmatrix))
       X = as.matrix(dmatrix)
-      
-      print(dim(X))
       
       Y = as.factor(drugs == drug_of_interest)
       colnames(X) <- names(dmatrix)
