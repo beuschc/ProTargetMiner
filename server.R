@@ -49,7 +49,7 @@ server <- function(input, output){
           colnames(mer)[1] <- "Gene.names"
           
           suppressWarnings(data <- data %>%
-            right_join(mer, by = "Gene.names") %>%
+            left_join(mer, by = "Gene.names") %>%
                           na.omit()
                           )
           
