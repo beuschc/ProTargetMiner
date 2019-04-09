@@ -123,7 +123,7 @@ server <- function(input, output){
       data <- as.data.frame(t(data[,-1]))
       colnames(data) <- names
       data$Sample <- row.names(data)
-      rownames(data) <- NULL
+      #rownames(data) <- NULL
       
       data$Drug <- str_sub(data$Sample, 1, str_length(data$Sample)-2)
       
@@ -131,14 +131,10 @@ server <- function(input, output){
       write_tsv(data, "C:/Users/chrbeu/ownCloud/Desktop/test.tsv")
       dmatrix <- data %>%
         dplyr::select(c(-Drug, -Sample))
-      
-      write_tsv(dmatrix, "C:/Users/chrbeu/ownCloud/Desktop/dmatrix.tsv")
-      
+
       res <- data.frame(id = names(dmatrix))
       resrank <- data.frame(id = names(dmatrix))
       X = as.matrix(dmatrix)
-      
-      write_tsv(dmatrix, "C:/Users/chrbeu/ownCloud/Desktop/X.tsv")
       
       Y = as.factor(drugs == drug_of_interest)
       colnames(X) <- names(dmatrix)
