@@ -16,7 +16,7 @@ ui <- dashboardPage(
   dashboardSidebar(
     width = 350,
       radioButtons("radio", label = h3("Select your proteomics data set"),
-                   choices = list("original ProTargetMiner (n=56)" = 5, "A549 (n=9)" = 1,
+                   choices = list("original ProTargetMiner (n=54)" = 5, "A549 (n=9)" = 1,
                                   "MCF7 (n=9)" = 2, "RKO (n=9)" = 3, "own data set" = 4), 
                    selected = 1),
       
