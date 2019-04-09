@@ -50,8 +50,6 @@ server <- function(input, output){
           
           suppressWarnings(data <- data %>%
             right_join(mer, by = "Gene.names"))
-          
-          print(colnames(data))
         }
       }
       
@@ -101,12 +99,15 @@ server <- function(input, output){
   output$choose_columns <- renderUI({
     data <- df()
     if(is.data.frame(data)){
+      print(colnames(data))
       good <- which(!grepl("MCF7", colnames(data)) &
                       !grepl("A549", colnames(data)) &
                       !grepl("RKO", colnames(data)))
       data <- data[,good]
       data <- data[,-c(1:5)]
+      print(colnames(data))
       colnames <- str_sub(colnames(data), 1, str_length(colnames(data))-2)
+      print(colnames)
       
       w <- which(colnames == "Control")
       if(length(w) > 0){
