@@ -125,7 +125,6 @@ server <- function(input, output){
     data <- df()
 
     if(is.data.frame(data) & !is.null(drug_of_interest)){
-      print(1)
       names <- data$Majority.protein.IDs
       data <- data[,-c(2:5)]
       data <- as.data.frame(t(data[,-1]))
@@ -133,14 +132,18 @@ server <- function(input, output){
       data$Sample <- row.names(data)
       rownames(data) <- NULL
       
+      print(1)
+      
       data$Drug <- str_sub(data$Sample, 1, str_length(data$Sample)-2)
       #data <- data %>%
       #  filter(Drug != "Control")
+      print(2)
       
       drugs <- data$Drug
       dmatrix <- data %>%
         dplyr::select(-Drug, -Sample)
-          
+       
+      print(3)
       res <- data.frame(id = names(dmatrix))
       resrank <- data.frame(id = names(dmatrix))
       X = as.matrix(dmatrix)
