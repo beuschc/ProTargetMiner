@@ -48,10 +48,10 @@ server <- function(input, output){
           colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = "_")
           colnames(mer)[1] <- "Gene.names"
           
-          print(colnames(mer))
-
           suppressWarnings(data <- data %>%
             right_join(mer, by = "Gene.names"))
+          
+          print(colnames(data))
         }
       }
       
