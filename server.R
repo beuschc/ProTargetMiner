@@ -45,7 +45,7 @@ server <- function(input, output){
                     
           mer <- read.csv(ds, header = T) %>%
             dplyr::select(-c("Majority.protein.IDs", "Protein.names", "Peptides", "Sequence.coverage...."))
-          colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = ".")
+          colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = "_")
           colnames(mer)[1] <- "Gene.names"
           
           suppressWarnings(data <- data %>%
