@@ -140,17 +140,19 @@ server <- function(input, output){
       dmatrix <- data %>%
         dplyr::select(-Drug, -Sample)
      
+      print(dim(dmatrix))
+      
       res <- data.frame(id = names(dmatrix))
       resrank <- data.frame(id = names(dmatrix))
       X = as.matrix(dmatrix)
+      
+      print(dim(X))
       
       Y = as.factor(drugs == drug_of_interest)
       colnames(X) <- names(dmatrix)
       plsda.res <- mixOmics::plsda(scale(X), Y, ncomp = 2)
       wyloadings <- plsda.res$loadings$Y[, 1]
-      
-      print(dim(wyloadings))
-      
+            
       load.plsda <- as.data.frame(plsda.res$loadings$X)
       load.plsda$Majority.protein.IDs <- rownames(load.plsda)
       load.plsda$label <- "Protein"
