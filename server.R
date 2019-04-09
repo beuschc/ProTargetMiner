@@ -132,6 +132,8 @@ server <- function(input, output){
       dmatrix <- data %>%
         dplyr::select(-Drug, -Sample)
       
+      write_tsv(dmatrix, "C:/Users/chrbeu/ownCloud/Desktop/dmatrix.tsv")
+      
       res <- data.frame(id = names(dmatrix))
       resrank <- data.frame(id = names(dmatrix))
       X = as.matrix(dmatrix)
