@@ -137,7 +137,6 @@ server <- function(input, output){
       #  filter(Drug != "Control")
       
       drugs <- data$Drug
-      print(colnames(data))
       dmatrix <- data %>%
         dplyr::select(-Drug, -Sample)
       
