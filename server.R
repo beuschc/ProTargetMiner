@@ -133,11 +133,11 @@ server <- function(input, output){
       rownames(data) <- NULL
       
       data$Drug <- str_sub(data$Sample, 1, str_length(data$Sample)-2)
-      print(data$Drug)
       #data <- data %>%
       #  filter(Drug != "Control")
       
       drugs <- data$Drug
+      write_tsv(data, "test.tsv")
       dmatrix <- data %>%
         dplyr::select(-Drug, -Sample)
       
