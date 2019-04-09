@@ -99,16 +99,13 @@ server <- function(input, output){
   output$choose_columns <- renderUI({
     data <- df()
     if(is.data.frame(data)){
-      print(colnames(data))
       good <- which(!grepl("MCF7", colnames(data)) &
                       !grepl("A549", colnames(data)) &
                       !grepl("RKO", colnames(data)))
       data <- data[,good]
       data <- data[,-c(1:5)]
-      print(colnames(data))
       colnames <- str_sub(colnames(data), 1, str_length(colnames(data))-2)
-      print(colnames)
-      
+
       w <- which(colnames == "Control")
       if(length(w) > 0){
         colnames <- colnames[-w]
@@ -151,6 +148,9 @@ server <- function(input, output){
       colnames(X) <- names(dmatrix)
       plsda.res <- mixOmics::plsda(scale(X), Y, ncomp = 2)
       wyloadings <- plsda.res$loadings$Y[, 1]
+      
+      print(ncol(wyloadings))
+      print(nrow(wyloadings))
       
       load.plsda <- as.data.frame(plsda.res$loadings$X)
       load.plsda$Majority.protein.IDs <- rownames(load.plsda)
