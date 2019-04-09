@@ -132,7 +132,6 @@ server <- function(input, output){
       drugs <- data$Drug
       print(data$Drug)
       print(data$Sample)
-      print(colnames(data))
       print(rownames(data))
       dmatrix <- data %>%
         dplyr::select(-Drug, -Sample)
