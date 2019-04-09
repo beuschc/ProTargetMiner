@@ -132,18 +132,15 @@ server <- function(input, output){
       data$Sample <- row.names(data)
       rownames(data) <- NULL
       
-      print(1)
-      
       data$Drug <- str_sub(data$Sample, 1, str_length(data$Sample)-2)
       #data <- data %>%
       #  filter(Drug != "Control")
-      print(2)
       
       drugs <- data$Drug
+      print(drugs)
       dmatrix <- data %>%
         dplyr::select(-Drug, -Sample)
-       
-      print(3)
+      
       res <- data.frame(id = names(dmatrix))
       resrank <- data.frame(id = names(dmatrix))
       X = as.matrix(dmatrix)
