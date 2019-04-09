@@ -149,8 +149,7 @@ server <- function(input, output){
       plsda.res <- mixOmics::plsda(scale(X), Y, ncomp = 2)
       wyloadings <- plsda.res$loadings$Y[, 1]
       
-      print(ncol(wyloadings))
-      print(nrow(wyloadings))
+      print(dim(wyloadings))
       
       load.plsda <- as.data.frame(plsda.res$loadings$X)
       load.plsda$Majority.protein.IDs <- rownames(load.plsda)
