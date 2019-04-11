@@ -37,7 +37,7 @@ server <- function(input, output){
   df <- reactive({
     ds <- data.set()
     if(is.character(ds)){
-      data <- read_csv(ds, header = T)
+      data <- read_csv(ds)
       
       if(input$radio == 4 & length(input$checkGroup) > 0){
         for(i in 1:length(input$checkGroup)){
