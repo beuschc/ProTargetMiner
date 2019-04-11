@@ -43,7 +43,7 @@ server <- function(input, output){
         for(i in 1:length(input$checkGroup)){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
                     
-          mer <- read_csv(ds, header = T) %>%
+          mer <- read_csv(ds) %>%
             dplyr::select(-c("Majority protein IDs", "Protein names", "Peptides", "Sequence coverage [%]"))
           colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = "_")
           colnames(mer)[1] <- "Gene names"
