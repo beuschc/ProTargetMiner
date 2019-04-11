@@ -53,7 +53,7 @@ server <- function(input, output){
                           na.omit()
                           )
           
-          data <- data[!duplicated(data$Majority.protein.IDs),]
+          data <- data[!duplicated(data$`Majority protein IDs`),]
         }
       }
       
@@ -139,7 +139,7 @@ server <- function(input, output){
       wyloadings <- plsda.res$loadings$Y[, 1]
       
       load.plsda <- as.data.frame(plsda.res$loadings$X)
-      load.plsda$Majority.protein.IDs <- rownames(load.plsda)
+      load.plsda$`Majority protein IDs` <- rownames(load.plsda)
       load.plsda$label <- "Protein"
        
       orientation_min <- load.plsda[which(load.plsda$`comp 1` == min(load.plsda$`comp 1`, na.rm = T)),]
@@ -149,7 +149,7 @@ server <- function(input, output){
         dplyr::select(c(`Majority protein IDs`, contains(drug_of_interest)))
       
       d_min <- d %>%
-        dplyr::filter(Majority.protein.IDs == orientation_min$`Majority protein IDs`) %>%
+        dplyr::filter(`Majority protein IDs` == orientation_min$`Majority protein IDs`) %>%
         gather(Treatment, value, 2:4) %>%
         summarise(mean.value = mean(value, na.rm = T)) 
       
@@ -166,7 +166,7 @@ server <- function(input, output){
                          "comp 2" = 0)
       colnames(cont) = c("comp 1", "comp 2")
       
-      cont$Majority.protein.IDs = c("all other drugs", drug_of_interest)
+      cont$`Majority protein IDs` = c("all other drugs", drug_of_interest)
       cont$label <- cont$`Majority protein IDs`
 
       load.plsda <- rbind(load.plsda, cont)
