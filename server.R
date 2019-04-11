@@ -125,7 +125,6 @@ server <- function(input, output){
       data$Drug <- str_sub(data$Sample, 1, str_length(data$Sample)-2)
       
       drugs <- data$Drug
-      write_tsv(data, "C:/Users/chrbeu/ownCloud/Desktop/test.tsv")
       dmatrix <- data %>%
         dplyr::select(c(-Drug, -Sample))
 
