@@ -37,16 +37,16 @@ server <- function(input, output){
   df <- reactive({
     ds <- data.set()
     if(is.character(ds)){
-      data <- read.csv(ds, header = T)
+      data <- read_csv(ds, header = T)
       
       if(input$radio == 4 & length(input$checkGroup) > 0){
         for(i in 1:length(input$checkGroup)){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
                     
-          mer <- read.csv(ds, header = T) %>%
-            dplyr::select(-c("Majority.protein.IDs", "Protein.names", "Peptides", "Sequence.coverage...."))
+          mer <- read_csv(ds, header = T) %>%
+            dplyr::select(-c("Majority protein IDs", "Protein names", "Peptides", "Sequence coverage [%]"))
           colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = "_")
-          colnames(mer)[1] <- "Gene.names"
+          colnames(mer)[1] <- "Gene names"
           
           suppressWarnings(data <- data %>%
             left_join(mer, by = "Gene.names") %>%
@@ -122,7 +122,7 @@ server <- function(input, output){
     data <- df()
 
     if(is.data.frame(data) & !is.null(drug_of_interest)){
-      names <- data$Majority.protein.IDs
+      names <- data$`Majority protein IDs`
       data <- data[,-c(2:5)]
       data <- as.data.frame(t(data[,-1]))
       colnames(data) <- names
@@ -154,15 +154,15 @@ server <- function(input, output){
       orientation_max <- load.plsda[which(load.plsda$`comp 1` == max(load.plsda$`comp 1`, na.rm = T)),]
 
       d <- df() %>%
-        dplyr::select(c(Majority.protein.IDs, contains(drug_of_interest)))
+        dplyr::select(c(`Majority protein IDs`, contains(drug_of_interest)))
       
       d_min <- d %>%
-        dplyr::filter(Majority.protein.IDs == orientation_min$Majority.protein.IDs) %>%
+        dplyr::filter(Majority.protein.IDs == orientation_min$`Majority protein IDs`) %>%
         gather(Treatment, value, 2:4) %>%
         summarise(mean.value = mean(value, na.rm = T)) 
       
       d_max <- d %>%
-        dplyr::filter(Majority.protein.IDs == orientation_max$Majority.protein.IDs) %>%
+        dplyr::filter(`Majority protein IDs` == orientation_max$`Majority protein IDs`) %>%
         gather(Treatment, value, 2:4) %>%
         summarise(mean.value = mean(value, na.rm = T))
       
@@ -175,7 +175,7 @@ server <- function(input, output){
       colnames(cont) = c("comp 1", "comp 2")
       
       cont$Majority.protein.IDs = c("all other drugs", drug_of_interest)
-      cont$label <- cont$Majority.protein.IDs
+      cont$label <- cont$`Majority protein IDs`
 
       load.plsda <- rbind(load.plsda, cont)
       
@@ -185,7 +185,7 @@ server <- function(input, output){
       info <- info[,c(1:5)]
       
       suppressWarnings(load.plsda <- info %>%
-                         right_join(load.plsda, by = "Majority.protein.IDs"))
+                         right_join(load.plsda, by = "Majority protein IDs"))
       
       return(load.plsda)
     }
@@ -200,11 +200,11 @@ server <- function(input, output){
     if(is.data.frame(load.plsda)){
       load.plsda$pointsize <- ifelse(load.plsda$label != "Protein", 1.5, 1)
       
-      load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$Majority.protein.IDs, sep = " = "),
-                            paste("Gene names", load.plsda$Gene.names, sep = " = "),
-                            paste("Protein names", load.plsda$Protein.names, sep = " = "),
+      load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$`Majority protein IDs`, sep = " = "),
+                            paste("Gene names", load.plsda$`Gene names`, sep = " = "),
+                            paste("Protein names", load.plsda$`Protein names`, sep = " = "),
                             paste("Peptides", load.plsda$Peptides, sep = " = "),
-                            paste("Sequence coverage", load.plsda$Sequence.coverage, sep = " = "), sep = "\n")
+                            paste("Sequence coverage", load.plsda$`Sequence coverage [%]`, sep = " = "), sep = "\n")
       
       g <- ggplot(load.plsda) +
         geom_hline(yintercept = 0) +
@@ -233,20 +233,20 @@ server <- function(input, output){
       poi <- event_data("plotly_click", source = "PLSDA.plot")
       
       if(!is.null(poi)){
-        poi.df <- load.plsda$Majority.protein.IDs[(poi$pointNumber + 1)]
+        poi.df <- load.plsda$`Majority protein IDs`[(poi$pointNumber + 1)]
         
-        load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$Majority.protein.IDs, sep = " = "),
-                              paste("Gene names", load.plsda$Gene.names, sep = " = "),
-                              paste("Protein names", load.plsda$Protein.names, sep = " = "),
+        load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$`Majority protein IDs`, sep = " = "),
+                              paste("Gene names", load.plsda$`Gene names`, sep = " = "),
+                              paste("Protein names", load.plsda$`Protein names`, sep = " = "),
                               paste("Peptides", load.plsda$Peptides, sep = " = "),
-                              paste("Sequence coverage", load.plsda$Sequence.coverage, sep = " = "), sep = "\n")
+                              paste("Sequence coverage", load.plsda$`Sequence coverage [%]`, sep = " = "), sep = "\n")
         
         load.plsda <- load.plsda %>%
-          filter(Majority.protein.IDs == poi.df)
+          filter(`Majority protein IDs` == poi.df)
         
         data <- data %>%
-          dplyr::filter(Majority.protein.IDs == poi.df) %>%
-          gather(Condition, value, -Majority.protein.IDs)
+          dplyr::filter(`Majority protein IDs` == poi.df) %>%
+          gather(Condition, value, -`Majority protein IDs`)
         
         data$Treatment <- str_sub(data$Condition, 1, str_length(data$Condition)-2)
                 
