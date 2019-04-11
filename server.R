@@ -72,13 +72,6 @@ server <- function(input, output){
         }
       }
 
-      if(class(data[, 6]) == "factor"){
-        data[, -c(1:3)] <- sapply(data[, -c(1:3)], FUN = as.character)
-      }
-      if(class(data[, 6]) == "character"){
-        data[, -c(1:3)] <- sapply(data[, -c(1:3)], FUN = as.numeric)
-      }
-
     }
     else{
       data <- NULL
@@ -132,7 +125,6 @@ server <- function(input, output){
       data$Drug <- str_sub(data$Sample, 1, str_length(data$Sample)-2)
       
       drugs <- data$Drug
-      print(rownames(data))
       write_tsv(data, "C:/Users/chrbeu/ownCloud/Desktop/test.tsv")
       dmatrix <- data %>%
         dplyr::select(c(-Drug, -Sample))
