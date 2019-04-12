@@ -27,7 +27,7 @@ ui <- dashboardPage(
                                     "text/comma-separated-values,text/plain",
                                     ".csv"))),
     
-    conditionalPanel(condition = "input.radio == 4",
+    conditionalPanel(condition = "input.radio == 5",
                      checkboxGroupInput("checkGroup", label = h5("Please select data set(s) to merge with"), 
                                         choices = c("A549 (n=9)" = 1, "MCF7 (n=9)" = 2, "RKO (n=9)" = 3),
                                         selected = NULL)),
