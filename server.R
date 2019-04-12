@@ -7,6 +7,8 @@ require(mixOmics)
 require(shinydashboard)
 
 server <- function(input, output){
+  options(shiny.maxRequestSize=50*1024^2)
+  
   df <- NULL
   selected <- NULL
   plsda.df <- NULL
