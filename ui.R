@@ -16,11 +16,11 @@ ui <- dashboardPage(
   dashboardSidebar(
     width = 350,
       radioButtons("radio", label = h3("Select your proteomics data set"),
-                   choices = list("original ProTargetMiner (n=55)" = 5, "A549 (n=9)" = 1,
-                                  "MCF7 (n=9)" = 2, "RKO (n=9)" = 3, "own data set" = 4), 
+                   choices = list("original ProTargetMiner (n=55)" = 4, "A549 (n=9)" = 1,
+                                  "MCF7 (n=9)" = 2, "RKO (n=9)" = 3, "own data set" = 5), 
                    selected = 5),
       
-      conditionalPanel(condition = "input.radio == 4",
+      conditionalPanel(condition = "input.radio == 5",
                         fileInput("file1", "Please choose csv file",
                                   accept = c(
                                     "text/csv",
