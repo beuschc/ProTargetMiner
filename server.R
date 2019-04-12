@@ -17,9 +17,9 @@ server <- function(input, output){
   df.merge <- NULL
   inp <- NULL
   
-  dt <- data.frame(code = c(1, 2, 3, 4),
-                   data.set = c("ProTargetMiner" ,"A549", "MCF7", "RKO"),
-                      file.location = c("data/ProTargetMiner.csv", "data/A549_deep_proteome.csv", "data/MCF7_deep_proteome.csv", "data/RKO_deep_proteome.csv"))
+  dt <- data.frame(code = c(1, 2, 3, 5),
+                   data.set = c("A549", "MCF7", "RKO", "ProTargetMiner"),
+                      file.location = c("data/A549_deep_proteome.csv", "data/MCF7_deep_proteome.csv", "data/RKO_deep_proteome.csv", "data/ProTargetMiner.csv"))
 
   data.set <- reactive({
     if(is.character(input$radio)){
