@@ -17,16 +17,16 @@ server <- function(input, output){
   df.merge <- NULL
   inp <- NULL
   
-  dt <- data.frame(code = c(1, 2, 3, 5),
+  dt <- data.frame(code = c(1, 2, 3, 4),
                    data.set = c("A549", "MCF7", "RKO", "ProTargetMiner"),
                       file.location = c("data/A549_deep_proteome.csv", "data/MCF7_deep_proteome.csv", "data/RKO_deep_proteome.csv", "data/ProTargetMiner.csv"))
 
   data.set <- reactive({
     if(is.character(input$radio)){
-      if(input$radio < 4){
+      if(input$radio < 5){
         ds <- as.character(dt$file.location[which(dt$code == input$radio)])
       }
-      if(input$radio == 4){
+      if(input$radio == 5){
         inFile <- input$file1
         if(!is.null(inFile)){
           ds <- inFile$datapath
@@ -41,7 +41,7 @@ server <- function(input, output){
     if(is.character(ds)){
       data <- suppressMessages(read_csv(ds))
       
-      if(input$radio == 4 & length(input$checkGroup) > 0){
+      if(input$radio == 5 & length(input$checkGroup) > 0){
         for(i in 1:length(input$checkGroup)){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
                     
