@@ -58,22 +58,6 @@ server <- function(input, output){
           data <- data[!duplicated(data$`Majority protein IDs`),]
         }
       }
-      
-      for(i in 1:ncol(data)){
-        w <- which(is.na(data[,i]))
-        if(length(w) > 0){
-          data <- data[-w,]
-        }
-        w <- which(data[,i] == Inf) 
-        if(length(w) > 0){
-          data <- data[-w,]
-        }
-        w <- which(data[,i] == -Inf) 
-        if(length(w) > 0){
-          data <- data[-w,]
-        }
-      }
-
     }
     else{
       data <- NULL
