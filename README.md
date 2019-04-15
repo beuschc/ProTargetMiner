@@ -3,15 +3,15 @@ ProTargetMiner R Shiny package
 
 ## Installation
 
-Please install all necessary packages from CRAN of Bioconductor:
+Please install all necessary packages from CRAN or Bioconductor:
     
     install.packages(c("shiny", "plotly", "tidyverse", "DT", "shinycssloaders", "shinydashboard"))
     BiocManager::install("mixOmics")
     
     
-Once all packages has been installed, please start the R shiny with the following command:
+Once all packages are installed, please start the R shiny with the following command:
 
-    shiny::runGitHub("ProTargetMiner", "beuschc")
+    shiny::runGitHub("ProTargetMiner", "RZlab")
     
 ## Description
 
