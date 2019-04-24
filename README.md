@@ -11,7 +11,7 @@ Please install all necessary packages from CRAN or Bioconductor:
     
 Once all packages are installed, please start the R shiny with the following command:
 
-    shiny::runGitHub("ProTargetMiner", "RZlab")
+    shiny::runGitHub("ProTargetMiner", "beuschc")
     
 ## Description
 
