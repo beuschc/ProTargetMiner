@@ -1,13 +1,13 @@
-require(shiny)
-require(plotly)
-require(tidyverse)
-require(DT)
-require(shinycssloaders)
-require(mixOmics)
-require(shinydashboard)
+library(shiny)
+library(plotly)
+library(tidyverse)
+library(DT)
+library(shinycssloaders)
+library(mixOmics)
+library(shinydashboard)
 
 server <- function(input, output){
-  options(shiny.maxRequestSize=50*1024^2)
+  options(shiny.maxRequestSize = 50*1024^2)
   
   df <- NULL
   selected <- NULL
@@ -18,8 +18,8 @@ server <- function(input, output){
   inp <- NULL
   
   dt <- data.frame(code = c(1, 2, 3, 4),
-                   data.set = c("A549", "MCF7", "RKO", "ProTargetMiner"),
-                   file.location = c("data/A549_deep_proteome.csv", "data/MCF7_deep_proteome.csv", "data/RKO_deep_proteome.csv", "data/ProTargetMiner.csv"))
+                   data.set = c('A549', 'MCF7', 'RKO', 'ProTargetMiner'),
+                   file.location = c('data/A549_deep_proteome.csv', 'data/MCF7_deep_proteome.csv', 'data/RKO_deep_proteome.csv', 'data/ProTargetMiner.csv'))
   
   data.set <- reactive({
     if(is.character(input$radio)){
@@ -46,12 +46,12 @@ server <- function(input, output){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
           
           mer <- suppressMessages(read_csv(ds)) %>%
-            dplyr::select(-c("Majority protein IDs", "Protein names", "Peptides", "Sequence coverage [%]"))
-          colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = "_")
-          colnames(mer)[1] <- "Gene names"
+            dplyr::select(-c('Majority protein IDs', 'Protein names', 'Peptides', 'Sequence coverage [%]'))
+          colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = '_')
+          colnames(mer)[1] <- 'Gene names'
           
           suppressWarnings(data <- data %>%
-                             left_join(mer, by = "Gene names") %>%
+                             left_join(mer, by = 'Gene names') %>%
                              na.omit()
           )
           
@@ -69,9 +69,9 @@ server <- function(input, output){
     d <- df()
     
     if(!is.null(d)){
-      good <- which(!grepl("MCF7", colnames(d)) &
-                      !grepl("A549", colnames(d)) &
-                      !grepl("RKO", colnames(d)))
+      good <- which(!grepl('MCF7', colnames(d)) &
+                      !grepl('A549', colnames(d)) &
+                      !grepl('RKO', colnames(d)))
       datatable(d[,good], options = list(scrollX = T))
     }
     else{
@@ -82,14 +82,14 @@ server <- function(input, output){
   output$choose_columns <- renderUI({
     data <- df()
     if(is.data.frame(data)){
-      good <- which(!grepl("MCF7", colnames(data)) &
-                      !grepl("A549", colnames(data)) &
-                      !grepl("RKO", colnames(data)))
+      good <- which(!grepl('MCF7', colnames(data)) &
+                      !grepl('A549', colnames(data)) &
+                      !grepl('RKO', colnames(data)))
       data <- data[,good]
       data <- data[,-c(1:5)]
       colnames <- str_sub(colnames(data), 1, str_length(colnames(data))-2)
       
-      selectInput("columns", "Please choose your compound of interest", 
+      selectInput('columns', 'Please choose your compound of interest', 
                   choices  = colnames,
                   selected = colnames)
     }
@@ -125,7 +125,7 @@ server <- function(input, output){
       
       load.plsda <- as.data.frame(plsda.res$loadings$X)
       load.plsda$`Majority protein IDs` <- rownames(load.plsda)
-      load.plsda$label <- "Protein"
+      load.plsda$label <- 'Protein'
       
       orientation_min <- load.plsda[which(load.plsda$`comp 1` == min(load.plsda$`comp 1`, na.rm = T)),]
       orientation_max <- load.plsda[which(load.plsda$`comp 1` == max(load.plsda$`comp 1`, na.rm = T)),]
@@ -147,11 +147,11 @@ server <- function(input, output){
         load.plsda$`comp 1` <- - load.plsda$`comp 1`
       }
       
-      cont <- data.frame("comp 1" = c(min(load.plsda$`comp 1`) * 1.5, max(load.plsda$`comp 1`) * 1.5),
-                         "comp 2" = 0)
-      colnames(cont) = c("comp 1", "comp 2")
+      cont <- data.frame('comp 1' = c(min(load.plsda$`comp 1`) * 1.5, max(load.plsda$`comp 1`) * 1.5),
+                         'comp 2' = 0)
+      colnames(cont) = c('comp 1', 'comp 2')
       
-      cont$`Majority protein IDs` = c("all other drugs", drug_of_interest)
+      cont$`Majority protein IDs` = c('all other drugs', drug_of_interest)
       cont$label <- cont$`Majority protein IDs`
       
       load.plsda <- rbind(load.plsda, cont)
@@ -162,7 +162,7 @@ server <- function(input, output){
       info <- info[,c(1:5)]
       
       suppressWarnings(load.plsda <- info %>%
-                         right_join(load.plsda, by = "Majority protein IDs"))
+                         right_join(load.plsda, by = 'Majority protein IDs'))
       
       return(load.plsda)
     }
@@ -175,24 +175,24 @@ server <- function(input, output){
     req(plsda.df())
     load.plsda <- plsda.df()
     if(is.data.frame(load.plsda)){
-      load.plsda$pointsize <- ifelse(load.plsda$label != "Protein", 1.5, 1)
+      load.plsda$pointsize <- ifelse(load.plsda$label != 'Protein', 1.5, 1)
       
-      load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$`Majority protein IDs`, sep = " = "),
-                             paste("Gene names", load.plsda$`Gene names`, sep = " = "),
-                             paste("Protein names", load.plsda$`Protein names`, sep = " = "),
-                             paste("Peptides", load.plsda$Peptides, sep = " = "),
-                             paste("Sequence coverage", load.plsda$`Sequence coverage [%]`, sep = " = "), sep = "\n")
+      load.plsda$ID <- paste(paste('Majority protein IDs', load.plsda$`Majority protein IDs`, sep = ' = '),
+                             paste('Gene names', load.plsda$`Gene names`, sep = ' = '),
+                             paste('Protein names', load.plsda$`Protein names`, sep = ' = '),
+                             paste('Peptides', load.plsda$Peptides, sep = ' = '),
+                             paste('Sequence coverage', load.plsda$`Sequence coverage [%]`, sep = ' = '), sep = '\n')
       
       g <- ggplot(load.plsda) +
         geom_hline(yintercept = 0) +
         geom_vline(xintercept = 0) +
         geom_point(aes(x = `comp 1`, y = `comp 2`, colour = `label`, group = `ID`, size = `pointsize`), alpha = 0.5) +
         theme_classic()+
-        theme(legend.position = "none")
+        theme(legend.position = 'none')
       
-      ggplotly(g, source = "PLSDA.plot",
-               tooltip = c("group")) %>%
-        layout(dragmode = "select")
+      ggplotly(g, source = 'PLSDA.plot',
+               tooltip = c('group')) %>%
+        layout(dragmode = 'select')
     }
     else{
       ggplotly(ggplot())
@@ -207,7 +207,7 @@ server <- function(input, output){
     drug_of_interest <- input$columns
     data <- df()[,-c(2:5)]
     if(is.data.frame(load.plsda)){
-      poi <- event_data("plotly_click", source = "PLSDA.plot")
+      poi <- event_data('plotly_click', source = 'PLSDA.plot')
       
       if(!is.null(poi)){
         poi.df <- load.plsda$`Majority protein IDs`[(poi$pointNumber + 1)]
@@ -222,14 +222,14 @@ server <- function(input, output){
         
         marked.protein <- data %>%
           filter(Treatment == drug_of_interest)
-       
-        load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$`Majority protein IDs`, sep = " = "),
-                               paste("Gene names", load.plsda$`Gene names`, sep = " = "),
-                               paste("Protein names", load.plsda$`Protein names`, sep = " = "),
-                               paste("Peptides", load.plsda$Peptides, sep = " = "),
-                               paste("Sequence coverage", load.plsda$`Sequence coverage [%]`, sep = " = "),
-                               paste("p.value vs. control", round(t.test(marked.protein$value, mu = 1)$p.value, 4), sep = " = "),
-                               sep = "\n")
+        
+        load.plsda$ID <- paste(paste('Majority protein IDs', load.plsda$`Majority protein IDs`, sep = ' = '),
+                               paste('Gene names', load.plsda$`Gene names`, sep = ' = '),
+                               paste('Protein names', load.plsda$`Protein names`, sep = ' = '),
+                               paste('Peptides', load.plsda$Peptides, sep = ' = '),
+                               paste('Sequence coverage', load.plsda$`Sequence coverage [%]`, sep = ' = '),
+                               paste('p.value vs. control', round(t.test(marked.protein$value, mu = 1)$p.value, 4), sep = ' = '),
+                               sep = '\n')
         
         s <- data %>%
           group_by(Treatment) %>%
@@ -240,18 +240,18 @@ server <- function(input, output){
         s$mark <- as.factor(s$mark)
         
         g <- ggplot(s, aes(x = Treatment, y = mean.value, fill = mark)) +
-          geom_bar(stat = "identity", position = "dodge") +
+          geom_bar(stat = 'identity', position = 'dodge') +
           geom_errorbar(aes(ymin = mean.value - sd.value, ymax = mean.value + sd.value), width = 0.25, position = position_dodge(0.1)) +
           ggtitle(load.plsda$ID) +
-          ylab("Mean Fold Change +/- SD") +
-          scale_fill_manual(values = c("grey", "red")) +
+          ylab('Mean Fold Change +/- SD') +
+          scale_fill_manual(values = c('grey', 'red')) +
           ylim(0, max((s$mean.value + s$sd.value)) * 1.4) +
           theme_classic() +
           theme(axis.text.x = element_text(angle = 45, hjust = 1),
-                legend.position = "none",
+                legend.position = 'none',
                 plot.title = element_text(size = 10))
         
-        ggplotly(g, tooltip = c("Treatment", "mean.value"))
+        ggplotly(g, tooltip = c('Treatment', 'mean.value'))
       }  
       else{
         ggplotly(ggplot())
@@ -268,7 +268,7 @@ server <- function(input, output){
     if(is.data.frame(load.plsda)){
       d <- load.plsda %>%
         dplyr::arrange(`comp 1`) %>%
-        dplyr::filter(label == "Protein") %>%
+        dplyr::filter(label == 'Protein') %>%
         dplyr::select(-label)
       
       datatable(d,
@@ -281,49 +281,49 @@ server <- function(input, output){
   
   output$dynamicTitle1 <- renderText({
     if(nchar(input$radio) > 0){
-      sprintf("Data Table of file %s", data.set())
+      sprintf('Data Table of file %s', data.set())
     }
     else{
-      sprintf("Please select your data file")
+      sprintf('Please select your data file')
     }
     
   })
   
   output$dynamicTitle2 <- renderText({
     req(input$columns)
-    sprintf("PLSDA model for %s", input$columns)
+    sprintf('PLSDA model for %s', input$columns)
   })
   
   output$dynamicTitle3 <- renderText({
     req(input$columns)
-    sprintf("PLSDA model for %s", input$columns)
+    sprintf('PLSDA model for %s', input$columns)
   })
   
   output$dynamicTitle4 <- renderText({
     if(nchar(input$columns) > 0){
-      sprintf("PLSDA model ranking for %s", input$columns)
+      sprintf('PLSDA model ranking for %s', input$columns)
     }
     else{
-      sprintf("Please select your protein of interest")
+      sprintf('Please select your protein of interest')
     }
     
   })
   
   output$download <- downloadHandler(
     filename = function(){
-      file = gsub("\\..*","", data.set())
-      paste(file, "_", input$columns, ".tsv", sep = "")
+      file = gsub('\\..*','', data.set())
+      paste(file, '_', input$columns, '.tsv', sep = '')
     }, 
     content = function(file.name){
       write_tsv(x = plsda.df() %>%
-                  filter(label == "Protein"),
+                  filter(label == 'Protein'),
                 path = file.name)
     }
   )
   
-  url <- a("ProTargetMiner: A proteome signature library of anticancer molecules for functional discovery",
-           href = "https://www.biorxiv.org/content/10.1101/421115v1")
+  url <- a('ProTargetMiner: A proteome signature library of anticancer molecules for functional discovery',
+           href = 'https://www.biorxiv.org/content/10.1101/421115v1')
   output$citation <- renderUI({
-    tagList("Please cite:", url)
+    tagList('Please cite:', url)
   })
 }
