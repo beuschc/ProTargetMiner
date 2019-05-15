@@ -223,10 +223,9 @@ server <- function(input, output){
         
         data <- data %>%
           dplyr::filter(`Majority protein IDs` == poi.df) %>%
-          gather(Condition, value, -`Majority protein IDs`)
-        
-        data$Treatment <- str_sub(data$Condition, 1, str_length(data$Condition)-2)
-                
+          gather(Condition, value, -`Majority protein IDs`) %>%
+          separate(Condition, sep = '_', remove = F, into = c('Treatment', 'Replica'))
+   
         s <- data %>%
           group_by(Treatment) %>%
           summarise(mean.value = mean(value, na.rm = T),
