@@ -19,8 +19,8 @@ server <- function(input, output){
   
   dt <- data.frame(code = c(1, 2, 3, 4),
                    data.set = c("A549", "MCF7", "RKO", "ProTargetMiner"),
-                      file.location = c("data/A549_deep_proteome.csv", "data/MCF7_deep_proteome.csv", "data/RKO_deep_proteome.csv", "data/ProTargetMiner.csv"))
-
+                   file.location = c("data/A549_deep_proteome.csv", "data/MCF7_deep_proteome.csv", "data/RKO_deep_proteome.csv", "data/ProTargetMiner.csv"))
+  
   data.set <- reactive({
     if(is.character(input$radio)){
       if(input$radio < 5){
@@ -44,16 +44,16 @@ server <- function(input, output){
       if(input$radio == 5 & length(input$checkGroup) > 0){
         for(i in 1:length(input$checkGroup)){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
-                    
+          
           mer <- suppressMessages(read_csv(ds)) %>%
             dplyr::select(-c("Majority protein IDs", "Protein names", "Peptides", "Sequence coverage [%]"))
           colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = "_")
           colnames(mer)[1] <- "Gene names"
           
           suppressWarnings(data <- data %>%
-            left_join(mer, by = "Gene names") %>%
-                          na.omit()
-                          )
+                             left_join(mer, by = "Gene names") %>%
+                             na.omit()
+          )
           
           data <- data[!duplicated(data$`Majority protein IDs`),]
         }
@@ -71,7 +71,7 @@ server <- function(input, output){
     if(!is.null(d)){
       good <- which(!grepl("MCF7", colnames(d)) &
                       !grepl("A549", colnames(d)) &
-                    !grepl("RKO", colnames(d)))
+                      !grepl("RKO", colnames(d)))
       datatable(d[,good], options = list(scrollX = T))
     }
     else{
@@ -95,11 +95,11 @@ server <- function(input, output){
     }
   })
   
- plsda.df <- reactive({
+  plsda.df <- reactive({
     req(input$columns)
     drug_of_interest = input$columns
     data <- df()
-
+    
     if(is.data.frame(data) & !is.null(drug_of_interest)){
       names <- data$`Majority protein IDs`
       data <- data[,-c(2:5)]
@@ -113,7 +113,7 @@ server <- function(input, output){
       drugs <- data$Drug
       dmatrix <- data %>%
         dplyr::select(c(-Drug, -Sample))
-
+      
       res <- data.frame(id = names(dmatrix))
       resrank <- data.frame(id = names(dmatrix))
       X = as.matrix(dmatrix)
@@ -126,10 +126,10 @@ server <- function(input, output){
       load.plsda <- as.data.frame(plsda.res$loadings$X)
       load.plsda$`Majority protein IDs` <- rownames(load.plsda)
       load.plsda$label <- "Protein"
-       
+      
       orientation_min <- load.plsda[which(load.plsda$`comp 1` == min(load.plsda$`comp 1`, na.rm = T)),]
       orientation_max <- load.plsda[which(load.plsda$`comp 1` == max(load.plsda$`comp 1`, na.rm = T)),]
-
+      
       d <- df() %>%
         dplyr::select(c(`Majority protein IDs`, contains(drug_of_interest)))
       
@@ -146,14 +146,14 @@ server <- function(input, output){
       if(d_min > d_max){
         load.plsda$`comp 1` <- - load.plsda$`comp 1`
       }
-       
+      
       cont <- data.frame("comp 1" = c(min(load.plsda$`comp 1`) * 1.5, max(load.plsda$`comp 1`) * 1.5),
                          "comp 2" = 0)
       colnames(cont) = c("comp 1", "comp 2")
       
       cont$`Majority protein IDs` = c("all other drugs", drug_of_interest)
       cont$label <- cont$`Majority protein IDs`
-
+      
       load.plsda <- rbind(load.plsda, cont)
       
       load.plsda$`comp 1` <- load.plsda$`comp 1`
@@ -178,10 +178,10 @@ server <- function(input, output){
       load.plsda$pointsize <- ifelse(load.plsda$label != "Protein", 1.5, 1)
       
       load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$`Majority protein IDs`, sep = " = "),
-                            paste("Gene names", load.plsda$`Gene names`, sep = " = "),
-                            paste("Protein names", load.plsda$`Protein names`, sep = " = "),
-                            paste("Peptides", load.plsda$Peptides, sep = " = "),
-                            paste("Sequence coverage", load.plsda$`Sequence coverage [%]`, sep = " = "), sep = "\n")
+                             paste("Gene names", load.plsda$`Gene names`, sep = " = "),
+                             paste("Protein names", load.plsda$`Protein names`, sep = " = "),
+                             paste("Peptides", load.plsda$Peptides, sep = " = "),
+                             paste("Sequence coverage", load.plsda$`Sequence coverage [%]`, sep = " = "), sep = "\n")
       
       g <- ggplot(load.plsda) +
         geom_hline(yintercept = 0) +
@@ -212,12 +212,6 @@ server <- function(input, output){
       if(!is.null(poi)){
         poi.df <- load.plsda$`Majority protein IDs`[(poi$pointNumber + 1)]
         
-        load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$`Majority protein IDs`, sep = " = "),
-                              paste("Gene names", load.plsda$`Gene names`, sep = " = "),
-                              paste("Protein names", load.plsda$`Protein names`, sep = " = "),
-                              paste("Peptides", load.plsda$Peptides, sep = " = "),
-                              paste("Sequence coverage", load.plsda$`Sequence coverage [%]`, sep = " = "), sep = "\n")
-        
         load.plsda <- load.plsda %>%
           filter(`Majority protein IDs` == poi.df)
         
@@ -225,7 +219,18 @@ server <- function(input, output){
           dplyr::filter(`Majority protein IDs` == poi.df) %>%
           gather(Condition, value, -`Majority protein IDs`) %>%
           separate(Condition, sep = '_', remove = F, into = c('Treatment', 'Replica'))
-   
+        
+        marked.protein <- data %>%
+          filter(Treatment == drug_of_interest)
+       
+        load.plsda$ID <- paste(paste("Majority protein IDs", load.plsda$`Majority protein IDs`, sep = " = "),
+                               paste("Gene names", load.plsda$`Gene names`, sep = " = "),
+                               paste("Protein names", load.plsda$`Protein names`, sep = " = "),
+                               paste("Peptides", load.plsda$Peptides, sep = " = "),
+                               paste("Sequence coverage", load.plsda$`Sequence coverage [%]`, sep = " = "),
+                               paste("p.value vs. control", round(t.test(marked.protein$value, mu = 1)$p.value, 4), sep = " = "),
+                               sep = "\n")
+        
         s <- data %>%
           group_by(Treatment) %>%
           summarise(mean.value = mean(value, na.rm = T),
@@ -240,7 +245,7 @@ server <- function(input, output){
           ggtitle(load.plsda$ID) +
           ylab("Mean Fold Change +/- SD") +
           scale_fill_manual(values = c("grey", "red")) +
-          ylim(0, max((s$mean.value + s$sd.value)) * 1.2) +
+          ylim(0, max((s$mean.value + s$sd.value)) * 1.4) +
           theme_classic() +
           theme(axis.text.x = element_text(angle = 45, hjust = 1),
                 legend.position = "none",
@@ -308,10 +313,10 @@ server <- function(input, output){
     filename = function(){
       file = gsub("\\..*","", data.set())
       paste(file, "_", input$columns, ".tsv", sep = "")
-      }, 
+    }, 
     content = function(file.name){
       write_tsv(x = plsda.df() %>%
-                filter(label == "Protein"),
+                  filter(label == "Protein"),
                 path = file.name)
     }
   )
