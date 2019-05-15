@@ -223,14 +223,14 @@ server <- function(input, output){
         marked.protein <- data %>%
           filter(Treatment == drug_of_interest)
         
-        load.plsda$ID <- paste(paste('Majority protein IDs', load.plsda$`Majority protein IDs`, sep = ' = '),
-                               paste('Gene names', load.plsda$`Gene names`, sep = ' = '),
-                               paste('Protein names', load.plsda$`Protein names`, sep = ' = '),
-                               paste('Peptides', load.plsda$Peptides, sep = ' = '),
-                               paste('Sequence coverage', load.plsda$`Sequence coverage [%]`, sep = ' = '),
-                               paste('p.value vs. control', round(t.test(marked.protein$value, mu = 1)$p.value, 4), sep = ' = '),
-                               sep = '\n')
-        
+        load.plsda <- load.plsda %>%
+        mutate(ID_main =  paste(paste("Majority protein IDs", load.plsda$`Majority protein IDs`, sep = " = "),
+                               paste("Gene names", load.plsda$`Gene names`, sep = " = "),
+                               paste("Protein names", load.plsda$`Protein names`, sep = " = "),
+                               paste("Peptides", load.plsda$Peptides, sep = " = "),
+                               paste("Sequence coverage", load.plsda$`Sequence coverage [%]`, sep = " = "),
+                               paste("p.value vs. control", round(t.test(marked.protein$value, mu = 1)$p.value, 4), sep = " = "),
+                               sep = "\n"))
         s <- data %>%
           group_by(Treatment) %>%
           summarise(mean.value = mean(value, na.rm = T),
@@ -242,14 +242,14 @@ server <- function(input, output){
         g <- ggplot(s, aes(x = Treatment, y = mean.value, fill = mark)) +
           geom_bar(stat = 'identity', position = 'dodge') +
           geom_errorbar(aes(ymin = mean.value - sd.value, ymax = mean.value + sd.value), width = 0.25, position = position_dodge(0.1)) +
-          ggtitle(load.plsda$ID) +
+          labs(title = load.plsda$ID_main) +
           ylab('Mean Fold Change +/- SD') +
           scale_fill_manual(values = c('grey', 'red')) +
           ylim(0, max((s$mean.value + s$sd.value)) * 1.4) +
           theme_classic() +
           theme(axis.text.x = element_text(angle = 45, hjust = 1),
                 legend.position = 'none',
-                plot.title = element_text(size = 10))
+                plot.title = element_text(size = 8, hjust = 0.5))
         
         ggplotly(g, tooltip = c('Treatment', 'mean.value'))
       }  
