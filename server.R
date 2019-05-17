@@ -243,7 +243,7 @@ server <- function(input, output){
         g <- ggplot(s, aes(x = Treatment, y = mean.value, fill = mark)) +
           geom_bar(stat = 'identity', position = 'dodge') +
           geom_errorbar(aes(ymin = mean.value - sd.value, ymax = mean.value + sd.value), width = 0.25, position = position_dodge(0.1)) +
-          geom_hline(yintercept = 1, col = 'black', linetype = 'solid') +
+          geom_hline(yintercept = 1, col = 'black', linetype = 'solid', alpha = 0.5) +
           labs(title = load.plsda$ID_main) +
           ylab('Mean Fold Change +/- SD') +
           scale_fill_manual(values = c('grey', 'red')) +
