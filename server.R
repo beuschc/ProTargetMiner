@@ -229,7 +229,7 @@ server <- function(input, output){
                                paste("Gene names", load.plsda$`Gene names`, sep = " = "),
                                paste("Protein names", load.plsda$`Protein names`, sep = " = "),
                                paste("Peptides", load.plsda$Peptides, sep = " = "),
-                               paste("Sequence coverage = ", load.plsda$`Sequence coverage [%]`, '[%]', sep = ""),
+                               paste("Sequence coverage = ", load.plsda$`Sequence coverage [%]`, "[%]", sep = ""),
                                paste("p.value vs. control", round(t.test(marked.protein$value, mu = 1)$p.value, 4), sep = " = "),
                                sep = "\n"))
         s <- data %>%
