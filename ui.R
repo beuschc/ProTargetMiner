@@ -8,6 +8,7 @@ require(shinydashboard)
 
 ui <- dashboardPage(
   
+#logo position
   dashboardHeader(
     title = img(src = "RZlab.jpg", height = 100, align = "left"),
     titleWidth = 350
@@ -41,6 +42,8 @@ ui <- dashboardPage(
     p(strong(uiOutput("citation")))
     
     ),
+ 
+  #colour and design settings
     dashboardBody(
       tags$head(tags$style(HTML('
                                 .skin-blue .main-header .navbar {
@@ -89,7 +92,7 @@ ui <- dashboardPage(
                                 float:top; margin-top:40px; padding-left:15px; padding-right:15px
                                 }
                                 '))),
-      
+#result section      
       tabsetPanel(type = "tabs",
                   tabPanel("ProTargetMiner", 
                            h1(""),
