@@ -9,6 +9,7 @@ library(shinydashboard)
 server <- function(input, output){
   options(shiny.maxRequestSize = 50*1024^2)
   
+  #defining variables
   df <- NULL
   selected <- NULL
   plsda.df <- NULL
@@ -17,10 +18,12 @@ server <- function(input, output){
   df.merge <- NULL
   inp <- NULL
   
+  #code, name and location of all available data sets
   dt <- data.frame(code = c(1, 2, 3, 4),
                    data.set = c('A549', 'MCF7', 'RKO', 'ProTargetMiner'),
                    file.location = c('data/A549_deep_proteome.csv', 'data/MCF7_deep_proteome.csv', 'data/RKO_deep_proteome.csv', 'data/ProTargetMiner.csv'))
   
+  #assign location (name) to the select input
   data.set <- reactive({
     if(is.character(input$radio)){
       if(input$radio < 5){
@@ -36,6 +39,7 @@ server <- function(input, output){
     return(ds)
   })
   
+  # read csv file(s) either as part of the privided data bases or from user
   df <- reactive({
     ds <- data.set()
     if(is.character(ds)){
@@ -65,6 +69,7 @@ server <- function(input, output){
     return(data)
   })
   
+  #table containing the user select file(s)
   output$contents <- DT::renderDataTable({
     d <- df()
     
@@ -79,6 +84,7 @@ server <- function(input, output){
     }
   })
   
+  #generation of all allowed drugs for plsda calculation
   output$choose_columns <- renderUI({
     data <- df()
     if(is.data.frame(data)){
@@ -95,6 +101,8 @@ server <- function(input, output){
     }
   })
   
+  #generation of plsda model
+  #all drug contrasting the user defined drug
   plsda.df <- reactive({
     req(input$columns)
     drug_of_interest = input$columns
@@ -143,6 +151,8 @@ server <- function(input, output){
         gather(Treatment, value, 2:4) %>%
         summarise(mean.value = mean(value, na.rm = T))
       
+      #define orientation of plsda model and plot
+      #positive x-axis corresponds to specific upregulation in user definied drug
       if(d_min > d_max){
         load.plsda$`comp 1` <- - load.plsda$`comp 1`
       }
@@ -171,6 +181,7 @@ server <- function(input, output){
     }
   })
   
+  #intarctive plot from plsda model
   output$PLSDA <- renderPlotly({
     req(plsda.df())
     load.plsda <- plsda.df()
@@ -199,6 +210,7 @@ server <- function(input, output){
     }
   })
   
+  #expression proteomics for the protein selected in the plsda plot
   output$POI <- renderPlotly({
     req(plsda.df())
     req(input$columns)
@@ -264,6 +276,7 @@ server <- function(input, output){
     }
   })
   
+  #interactive table for the plsda results
   output$top_plsda <- DT::renderDataTable({
     req(plsda.df())
     load.plsda <- plsda.df()
@@ -281,6 +294,7 @@ server <- function(input, output){
     }
   })
   
+  #user interaction with instruction for next step
   output$dynamicTitle1 <- renderText({
     if(nchar(input$radio) > 0){
       sprintf('Data Table of file %s', data.set())
@@ -301,6 +315,7 @@ server <- function(input, output){
     sprintf('PLSDA model for %s', input$columns)
   })
   
+  #user interaction with instruction for next step
   output$dynamicTitle4 <- renderText({
     if(nchar(input$columns) > 0){
       sprintf('PLSDA model ranking for %s', input$columns)
@@ -311,6 +326,7 @@ server <- function(input, output){
     
   })
   
+  #download of plsda results with automatic naming
   output$download <- downloadHandler(
     filename = function(){
       file = gsub('\\..*','', data.set())
@@ -323,6 +339,7 @@ server <- function(input, output){
     }
   )
   
+  #link to paper
   url <- a('ProTargetMiner: A proteome signature library of anticancer molecules for functional discovery',
            href = 'https://www.biorxiv.org/content/10.1101/421115v1')
   output$citation <- renderUI({
