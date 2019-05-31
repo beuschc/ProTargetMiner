@@ -234,7 +234,8 @@ server <- function(input, output){
         data$Treatment <- str_sub(data$Condition, 1, str_length(data$Condition)-2)
         
         marked.protein <- data %>%
-          filter(Treatment == drug_of_interest)
+          filter(Treatment == drug_of_interest) %>%
+          mutate(log.value = log2(value))
         
         load.plsda <- load.plsda %>%
         mutate(ID_main =  paste(paste("Majority protein IDs", load.plsda$`Majority protein IDs`, sep = " = "),
@@ -242,12 +243,13 @@ server <- function(input, output){
                                paste("Protein names", load.plsda$`Protein names`, sep = " = "),
                                paste("Peptides", load.plsda$Peptides, sep = " = "),
                                paste("Sequence coverage = ", load.plsda$`Sequence coverage [%]`, "[%]", sep = ""),
-                               paste("p.value vs. control", round(t.test(marked.protein$value, mu = 1)$p.value, 4), sep = " = "),
+                               paste("p.value vs. control", round(t.test(marked.protein$log.value, mu = 0)$p.value, 4), sep = " = "),
                                sep = "\n"))
         s <- data %>%
           group_by(Treatment) %>%
-          summarise(mean.value = mean(value, na.rm = T),
-                    sd.value = sd(value, na.rm = T))
+          mutate(log.value = log2(value)) %>%
+          summarise(mean.value = mean(log.value, na.rm = T),
+                    sd.value = sd(log.value, na.rm = T))
         
         s$mark <- ifelse(s$Treatment == drug_of_interest, 1, 0)
         s$mark <- as.factor(s$mark)
@@ -255,9 +257,9 @@ server <- function(input, output){
         g <- ggplot(s, aes(x = Treatment, y = mean.value, fill = mark)) +
           geom_bar(stat = 'identity', position = 'dodge') +
           geom_errorbar(aes(ymin = mean.value - sd.value, ymax = mean.value + sd.value), width = 0.25, position = position_dodge(0.1)) +
-          geom_hline(yintercept = 1, col = 'black', linetype = 'solid', alpha = 0.5) +
+          geom_hline(yintercept = 0, col = 'black', linetype = 'solid', alpha = 0.5) +
           labs(title = load.plsda$ID_main) +
-          ylab('Mean Fold Change +/- SD') +
+          ylab('Log2 Mean Fold Change +/- SD') +
           scale_fill_manual(values = c('grey', 'red')) +
           ylim(0, max((s$mean.value + s$sd.value)) * 1.4) +
           theme_classic() +
