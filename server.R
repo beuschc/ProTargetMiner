@@ -261,7 +261,7 @@ server <- function(input, output){
           labs(title = load.plsda$ID_main) +
           ylab('Log2 Mean Fold Change +/- SD') +
           scale_fill_manual(values = c('grey', 'red')) +
-          ylim(-Inf, max((s$mean.value + s$sd.value)) * 1.4) +
+          ylim(NA, max((s$mean.value + s$sd.value)) * 1.4) +
           theme_classic() +
           theme(axis.text.x = element_text(angle = 45, hjust = 1),
                 legend.position = 'none',
