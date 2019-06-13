@@ -243,7 +243,7 @@ server <- function(input, output){
                                paste("Protein names", load.plsda$`Protein names`, sep = " = "),
                                paste("Peptides", load.plsda$Peptides, sep = " = "),
                                paste("Sequence coverage = ", load.plsda$`Sequence coverage [%]`, "%", sep = ""),
-                               paste("p.value vs. control", round(t.test(marked.protein$log.value, mu = 0)$p.value, 4), sep = " = "),
+                               paste("p.value vs. control", round(t.test(marked.protein$log.value, mu = 0)$p.value, 6), sep = " = "),
                                sep = "\n"))
         s <- data %>%
           group_by(Treatment) %>%
