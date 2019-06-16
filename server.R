@@ -333,10 +333,10 @@ server <- function(input, output){
   output$download <- downloadHandler(
     filename = function(){
       file = gsub('\\..*','', data.set())
-      paste(file, '_', input$columns, '.tsv', sep = '')
+      paste(file, '_', input$columns, '.csv', sep = '')
     }, 
     content = function(file.name){
-      write_tsv(x = plsda.df() %>%
+      write_csv(x = plsda.df() %>%
                   filter(label == 'Protein'),
                 path = file.name)
     }
