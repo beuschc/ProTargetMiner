@@ -343,9 +343,8 @@ server <- function(input, output){
   )
   
   output$download <- renderUI({
-  if(!is.null(plsda.df)) {
-    downloadButton('OutputFile', 'Download Output File')
-  }
+    req(plsda.df())
+    downloadButton('OutputFile', 'Download PLSDA results')
 })
  
   
