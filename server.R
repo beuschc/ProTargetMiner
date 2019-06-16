@@ -7,6 +7,7 @@ library(mixOmics)
 library(shinydashboard)
 
 server <- function(input, output){
+  #extending max file size
   options(shiny.maxRequestSize = 50*1024^2)
   
   #defining variables
@@ -18,12 +19,12 @@ server <- function(input, output){
   df.merge <- NULL
   inp <- NULL
   
-  #code, name and location of all available data sets
+  #id, name and location of all available data sets
   dt <- data.frame(code = c(1, 2, 3, 4),
                    data.set = c('A549', 'MCF7', 'RKO', 'ProTargetMiner'),
                    file.location = c('data/A549_deep_proteome.csv', 'data/MCF7_deep_proteome.csv', 'data/RKO_deep_proteome.csv', 'data/ProTargetMiner.csv'))
   
-  #assign location (name) to the select input
+  #assign location/name to the select input
   data.set <- reactive({
     if(is.character(input$radio)){
       if(input$radio < 5){
@@ -39,7 +40,8 @@ server <- function(input, output){
     return(ds)
   })
   
-  # read csv file(s) either as part of the privided data bases or from user
+  # read csv file(s) provided as part of ProTargetMiner or from user
+  # cell separation by comma, decimal separation by point
   df <- reactive({
     ds <- data.set()
     if(is.character(ds)){
@@ -114,7 +116,6 @@ server <- function(input, output){
       data <- as.data.frame(t(data[,-1]))
       colnames(data) <- names
       data$Sample <- row.names(data)
-      #rownames(data) <- NULL
       
       data$Drug <- str_sub(data$Sample, 1, str_length(data$Sample)-2)
       
@@ -243,7 +244,7 @@ server <- function(input, output){
                                paste("Protein names", load.plsda$`Protein names`, sep = " = "),
                                paste("Peptides", load.plsda$Peptides, sep = " = "),
                                paste("Sequence coverage = ", load.plsda$`Sequence coverage [%]`, "%", sep = ""),
-                               paste("p.value vs. control", round(t.test(marked.protein$log.value, mu = 0)$p.value, 6), sep = " = "),
+                               paste("p.value vs. control (set to 0)", round(t.test(marked.protein$log.value, mu = 0)$p.value, 4), sep = " = "),
                                sep = "\n"))
         s <- data %>%
           group_by(Treatment) %>%
@@ -289,14 +290,14 @@ server <- function(input, output){
         dplyr::select(-label)
       
       datatable(d,
-                options = list(scrollX = TRUE))
+                options = list(scrollX = T))
     }
     else{
       return(NULL)
     }
   })
   
-  #user interaction with instruction for next step
+  #user interaction regarding instruction for next step
   output$dynamicTitle1 <- renderText({
     if(nchar(input$radio) > 0){
       sprintf('Data Table of file %s', data.set())
@@ -317,7 +318,7 @@ server <- function(input, output){
     sprintf('PLSDA model for %s', input$columns)
   })
   
-  #user interaction with instruction for next step
+  #user interaction regarding instruction for next step
   output$dynamicTitle4 <- renderText({
     if(nchar(input$columns) > 0){
       sprintf('PLSDA model ranking for %s', input$columns)
@@ -328,7 +329,7 @@ server <- function(input, output){
     
   })
   
-  #download of plsda results with automatic naming
+  #download of plsda results with automatic naming of files (data set and drug name)
   output$download <- downloadHandler(
     filename = function(){
       file = gsub('\\..*','', data.set())
