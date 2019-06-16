@@ -93,8 +93,7 @@ ui <- dashboardPage(
                                 }
                                 '))),
 #result section      
-      mainPanel("ProTargetMiner", 
-            	  h1(""),
+      mainPanel(h1(""),
                 h1(""),
                 h1(textOutput('dynamicTitle1')),
                 dataTableOutput("contents", width = "100%") %>%
