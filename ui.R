@@ -93,29 +93,29 @@ ui <- dashboardPage(
                                 }
                                 '))),
 #result section      
-      mainPanel(h1(""),
-                h1(""),
-                h1(textOutput('dynamicTitle1')),
-                dataTableOutput("contents", width = "100%") %>%
-                 withSpinner(),
+      tabsetPanel(type = "tabs",
+                  tabPanel("ProTargetMiner", 
+                           h1(""),
+                           h1(""),
+                           h1(textOutput('dynamicTitle1')),
+                           dataTableOutput("contents", width = "100%") %>% withSpinner(),
                            
-                h1(""),  
-                h1(""),
-                h1(textOutput('dynamicTitle2')),
-                plotlyOutput("PLSDA") %>%
-                 withSpinner(),
+                           h1(""),  
+                           h1(""),
+                           h1(textOutput('dynamicTitle2')),
+                           plotlyOutput("PLSDA") %>% withSpinner(),
                            
-                verbatimTextOutput("click"),
+                           verbatimTextOutput("click"),
                            
-                h1(""),
-                h1(""),
-                h1(textOutput('dynamicTitle3')),
-                dataTableOutput("top_plsda", width = "100%") %>%
-                 withSpinner(),
+                           h1(""),
+                           h1(""),
+                           h1(textOutput('dynamicTitle3')),
+                           dataTableOutput("top_plsda", width = "100%") %>% withSpinner(),
                            
-                h1(""),
-                h1(""),
-                plotlyOutput("POI")
-      			)
+                           h1(""),
+                           h1(""),
+                           plotlyOutput("POI")
+                           )
+      )
     )
 )
