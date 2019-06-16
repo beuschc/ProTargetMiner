@@ -35,7 +35,7 @@ ui <- dashboardPage(
 
     uiOutput("choose_columns"),
     
-    uiOutput("download")
+    uiOutput("download"),
     
     h1(""),
   
