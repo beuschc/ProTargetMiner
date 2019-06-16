@@ -88,6 +88,9 @@ ui <- dashboardPage(
                                 font-weight:bold; 
                                 line-height:24px;align:
                                 }
+                                .skin-blue .sidebar a {
+                                 color: #444;
+                                 }
                                 .main-sidebar {
                                 float:top; margin-top:40px; padding-left:15px; padding-right:15px
                                 }
