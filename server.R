@@ -330,7 +330,7 @@ server <- function(input, output){
   })
   
   #download of plsda results with automatic naming of files (data set and drug name)
-  output$download <- downloadHandler(
+  output$OutputFile <- downloadHandler(
     filename = function(){
       file = gsub('\\..*','', data.set())
       paste(file, '_', input$columns, '.csv', sep = '')
@@ -341,6 +341,13 @@ server <- function(input, output){
                 path = file.name)
     }
   )
+  
+  output$download <- renderUI({
+  if(!is.null(plsda.df)) {
+    downloadButton('OutputFile', 'Download Output File')
+  }
+})
+ 
   
   #link to paper
   url <- a('ProTargetMiner: A proteome signature library of anticancer molecules for functional discovery',
