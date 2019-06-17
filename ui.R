@@ -17,8 +17,8 @@ ui <- dashboardPage(
   dashboardSidebar(
     width = 350,
       radioButtons("radio", label = h3("Select your proteomics data set"),
-                   choices = list("original ProTargetMiner (n=55)" = 4, "A549 (n=9)" = 1,
-                                  "MCF7 (n=9)" = 2, "RKO (n=9)" = 3, "own data set" = 5), 
+                   choices = list("Original ProTargetMiner (n=55)" = 4, "A549 (n=9)" = 1,
+                                  "MCF7 (n=9)" = 2, "RKO (n=9)" = 3, "Own data set" = 5), 
                    selected = 4),
       
       conditionalPanel(condition = "input.radio == 5",
@@ -30,7 +30,8 @@ ui <- dashboardPage(
     
     conditionalPanel(condition = "input.radio == 5",
                      checkboxGroupInput("checkGroup", label = h5("Please select data set(s) to merge with"), 
-                                        choices = c("A549 (n=9)" = 1, "MCF7 (n=9)" = 2, "RKO (n=9)" = 3),
+                                        choices = c("Original ProTargetMiner (n=55)" = 4,
+                                                    "A549 (n=9)" = 1, "MCF7 (n=9)" = 2, "RKO (n=9)" = 3),
                                         selected = NULL)),
 
     uiOutput("choose_columns"),
