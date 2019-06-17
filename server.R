@@ -125,7 +125,7 @@ server <- function(input, output){
       
       res <- data.frame(id = names(dmatrix))
       resrank <- data.frame(id = names(dmatrix))
-      X = as.matrix(dmatrix)
+      X = as.matrix(log2(dmatrix))
       
       Y = as.factor(drugs == drug_of_interest)
       colnames(X) <- names(dmatrix)
