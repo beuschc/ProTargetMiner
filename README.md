@@ -4,7 +4,7 @@ ProTargetMiner R Shiny package
 
 # System Requirements
 ## Hardware Requirements
-The ProTargetMiner package requires a sstndartd office computer. 
+The ProTargetMiner package requires a standard office computer. 
 
 ## Software Requirements
 ### OS Requirements
