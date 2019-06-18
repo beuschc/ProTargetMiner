@@ -1,6 +1,7 @@
 ProTargetMiner R Shiny package
 ================
 
+
 # System Requirements
 ## Hardware Requirements
 The ProTargetMiner package requires a sstndartd office computer. 
@@ -20,6 +21,7 @@ shinycssloaders
 shinydashboard
 mixOmics
 ```
+
 # Installation Guide
 Please install all necessary packages from CRAN or Bioconductor:
     
