@@ -4,7 +4,8 @@ ProTargetMiner R Shiny package
 
 # System Requirements
 ## Hardware Requirements
-The ProTargetMiner package requires a standard office computer. 
+The ProTargetMiner package requires a standard office computer.
+Generation of the PLS-DA model will usually take less than 1min, however with increased data sets size this might be different. 
 
 ## Software Requirements
 ### OS Requirements
@@ -27,7 +28,7 @@ Please install all necessary packages from CRAN or Bioconductor:
     
     install.packages(c("shiny", "plotly", "tidyverse", "DT", "shinycssloaders", "shinydashboard"))
     BiocManager::install("mixOmics")    
-which should take less than 1min.   
+Which should take less than 1min.   
 
 Once all packages are installed, please start the ProTargetMiner R shiny with the following command:
 
