@@ -42,7 +42,7 @@ server <- function(input, output){
   
   # read csv file(s) provided as part of ProTargetMiner or from user
   # cell separation by comma, decimal separation by point
-  df <- reactive({
+    df <- reactive({
     ds <- data.set()
     if(is.character(ds)){
       data <- suppressMessages(read_csv(ds))
@@ -52,12 +52,12 @@ server <- function(input, output){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
           
           mer <- suppressMessages(read_csv(ds)) %>%
-            dplyr::select(-c('Gene names', 'Protein names', 'Peptides', 'Sequence coverage [%]'))
+            dplyr::select(-c('Majority protein IDs', 'Protein names', 'Peptides', 'Sequence coverage [%]'))
           colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = '_')
-          colnames(mer)[1] <- 'Majority protein IDs'
+          colnames(mer)[1] <- 'Gene names'
           
           suppressWarnings(data <- data %>%
-                             left_join(mer, by = 'Majority protein IDs') %>%
+                             left_join(mer, by = 'Gene names') %>%
                              na.omit()
           )
           
