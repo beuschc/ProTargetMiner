@@ -57,8 +57,7 @@ server <- function(input, output){
           colnames(mer)[1] <- 'Gene names'
           
           suppressWarnings(data <- data %>%
-                             left_join(mer, by = 'Gene names') %>%
-                             na.omit()
+                             left_join(mer, by = 'Gene names')
           )
           
           data <- data[!duplicated(data$`Majority protein IDs`),]
