@@ -52,7 +52,7 @@ server <- function(input, output){
           ds <- as.character(dt$file.location[which(dt$code == input$checkGroup[i])])
           
           mer <- suppressMessages(read_csv(ds)) %>%
-            dplyr::select(-c('Majority protein IDs', 'Protein names', 'Peptides', 'Sequence coverage [%]'))
+            dplyr::select(-c('Gene names', 'Protein names', 'Peptides', 'Sequence coverage [%]'))
           colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = '_')
           colnames(mer)[1] <- 'Gene names'
           
