@@ -26,9 +26,9 @@ mixOmics
 Please install all necessary packages from CRAN or Bioconductor:
     
     install.packages(c("shiny", "plotly", "tidyverse", "DT", "shinycssloaders", "shinydashboard"))
-    BiocManager::install("mixOmics")
-    
-    
+    BiocManager::install("mixOmics")    
+which should take less than 1min.   
+
 Once all packages are installed, please start the ProTargetMiner R shiny with the following command:
 
     shiny::runGitHub("ProTargetMiner", "beuschc")
