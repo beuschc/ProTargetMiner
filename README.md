@@ -10,26 +10,25 @@ Generation of the PLS-DA model will usually take less than 1min, however with in
 
 ## Software Requirements
 ### OS Requirements
-This package was develop under *Windows 7* running *R version 3.5.3* and was tetsed also on *Mac OSX*.
+This package was develop under *Windows 7* running *R version 3.5.3* and was succesfully ztetsed also on *Mac OSX*.
 
 ### R Dependencies
-The ProTargetMiner package depends on:
+The ProTargetMiner package depends on the follwing r packages (with version):
 ```
-shiny
-plotly
-tidyverse
-DT
-shinycssloaders
-shinydashboard
-mixOmics
+shiny_1.3.2
+plotly_4.9.0
+tidyverse_1.2.1
+DT_0.5
+shinycssloaders_0.2.0
+shinydashboard_0.7.1
+mixOmics_6.6.2
 ```
 
 # Installation Guide
-Please install all necessary packages from CRAN or Bioconductor:
+Please install all necessary packages from CRAN or Bioconductor which should take less than 1min.:
     
     install.packages(c("shiny", "plotly", "tidyverse", "DT", "shinycssloaders", "shinydashboard"))
     BiocManager::install("mixOmics")    
-Which should take less than 1min.   
 
 Once all packages are installed, please start the ProTargetMiner R shiny with the following command:
 
