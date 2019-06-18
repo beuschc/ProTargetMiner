@@ -10,7 +10,7 @@ Generation of the PLS-DA model will usually take less than 1min, however with in
 
 ## Software Requirements
 ### OS Requirements
-This package was develop under *Windows 7* and was tetsed also on *macOS: XXXX (XX)*.
+This package was develop under *Windows 7* and was tetsed also on *Mac OSX*.
 
 ### R Dependencies
 The ProTargetMiner package depends on:
