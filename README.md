@@ -6,7 +6,7 @@ ProTargetMiner R Shiny package
 ## Hardware Requirements
 The ProTargetMiner package requires a standard office computer.
 
-Generation of the PLS-DA model will usually take less than 1min, however with increased data sets size this might be different. 
+Generation of the PLS-DA model will usually take less than 1 min, however with increased datasets size this might be different. 
 
 ## Software Requirements
 ### OS Requirements
