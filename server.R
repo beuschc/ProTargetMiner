@@ -54,7 +54,7 @@ server <- function(input, output){
           mer <- suppressMessages(read_csv(ds)) %>%
             dplyr::select(-c('Gene names', 'Protein names', 'Peptides', 'Sequence coverage [%]'))
           colnames(mer) <- paste(as.character(dt$data.set[which(dt$code == input$checkGroup[i])]), colnames(mer), sep = '_')
-          colnames(mer)[1] <- 'Gene names'
+          colnames(mer)[1] <- 'Majority protein IDs'
           
           suppressWarnings(data <- data %>%
                              left_join(mer, by = 'Majority protein IDs') %>%
