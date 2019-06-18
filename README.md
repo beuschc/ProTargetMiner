@@ -25,7 +25,7 @@ mixOmics_6.6.2
 ```
 
 # Installation Guide
-Please install all necessary packages from CRAN or Bioconductor which should take less than 1min.:
+Please install all necessary packages from CRAN or Bioconductor which should take less than 1 min:
     
     install.packages(c("shiny", "plotly", "tidyverse", "DT", "shinycssloaders", "shinydashboard"))
     BiocManager::install("mixOmics")    
