@@ -33,7 +33,7 @@ Please install all necessary packages from CRAN or Bioconductor which should tak
 
 Once all packages are installed, please start the ProTargetMiner R shiny with the following command:
 
-    shiny::runGitHub("ProTargetMiner", "beuschc")
+    shiny::runGitHub("ProTargetMiner", "RZlab")
     
 # Description
 The ProTargetMiner R Shiny package is an automated online software for anticancer drug target/mechanism deconvolution. ProTargetMiner is the first publicly available expandable proteome signature library of anticancer molecules in cancer cell lines. Based on 55 compound signatures in A549 cells, the main resource contains data on 7,328 proteins and 1,307,859 refined protein-drug pairs. The drug targets/mechanisms can be deconvoluted by partial least square-discriminant analysis modeling (PLS-DA), where the proteome signature of a given compound is contrasted against a library of other signatures and specific proteins are revealed. For 9 molecules representing most diverse action mechanisms and common cancer cell lines MCF-7, RKO and A549, deep proteome datasets are made available. The database can be easily extended and merged with new compound signatures.
