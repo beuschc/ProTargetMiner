@@ -1,6 +1,7 @@
 ProTargetMiner R Shiny package
 ================
 
+ProTargetMiner is also available directly through this web page: http://protargetminer.genexplain.com.
 
 # System Requirements
 ## Hardware Requirements
