@@ -102,7 +102,7 @@ ui <- dashboardPage(
                            h1(""),
                            h1(""),
                            h1(textOutput('dynamicTitle1')),
-                           dataTableOutput("contents", width = "100%") %>% withSpinner(),
+                           dataTableOutput("contents") %>% withSpinner(),
                            
                            h1(""),  
                            h1(""),
@@ -114,7 +114,7 @@ ui <- dashboardPage(
                            h1(""),
                            h1(""),
                            h1(textOutput('dynamicTitle3')),
-                           dataTableOutput("top_plsda", width = "100%") %>% withSpinner(),
+                           dataTableOutput("top_plsda") %>% withSpinner(),
                            
                            h1(""),
                            h1(""),
