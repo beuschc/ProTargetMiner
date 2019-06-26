@@ -135,8 +135,8 @@ server <- function(input, output){
       load.plsda$`Majority protein IDs` <- rownames(load.plsda)
       load.plsda$label <- 'Protein'
       
-      orientation_min <- load.plsda[which(load.plsda$`comp 1` == min(load.plsda$`comp 1`, na.rm = T)),]
-      orientation_max <- load.plsda[which(load.plsda$`comp 1` == max(load.plsda$`comp 1`, na.rm = T)),]
+      orientation_min <- load.plsda[which(load.plsda$`comp1` == min(load.plsda$`comp1`, na.rm = T)),]
+      orientation_max <- load.plsda[which(load.plsda$`comp1` == max(load.plsda$`comp1`, na.rm = T)),]
       
       d <- df() %>%
         dplyr::select(c(`Majority protein IDs`, contains(drug_of_interest)))
@@ -154,10 +154,10 @@ server <- function(input, output){
       #define orientation of plsda model and plot
       #positive x-axis corresponds to specific upregulation in user definied drug
       if(d_min > d_max){
-        load.plsda$`comp 1` <- - load.plsda$`comp 1`
+        load.plsda$`comp1` <- - load.plsda$`comp1`
       }
       
-      cont <- data.frame('comp 1' = c(min(load.plsda$`comp 1`) * 1.5, max(load.plsda$`comp 1`) * 1.5),
+      cont <- data.frame('comp 1' = c(min(load.plsda$`comp1`) * 1.5, max(load.plsda$`comp1`) * 1.5),
                          'comp 2' = 0)
       colnames(cont) = c('comp 1', 'comp 2')
       
