@@ -19,10 +19,10 @@ The ProTargetMiner package depends on the follwing R packages (with version):
 shiny_1.3.2
 plotly_4.9.0
 tidyverse_1.2.1
-DT_0.5
+DT_0.8
 shinycssloaders_0.2.0
 shinydashboard_0.7.1
-mixOmics_6.6.2
+mixOmics_6.8.0
 ```
 
 # Installation Guide
