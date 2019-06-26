@@ -157,16 +157,16 @@ server <- function(input, output){
         load.plsda$`comp1` <- - load.plsda$`comp1`
       }
       
-      cont <- data.frame('comp 1' = c(min(load.plsda$`comp1`) * 1.5, max(load.plsda$`comp1`) * 1.5),
-                         'comp 2' = 0)
-      colnames(cont) = c('comp 1', 'comp 2')
+      cont <- data.frame('comp1' = c(min(load.plsda$`comp1`) * 1.5, max(load.plsda$`comp1`) * 1.5),
+                         'comp2' = 0)
+      colnames(cont) = c('comp1', 'comp2')
       
       cont$`Majority protein IDs` = c('all other drugs', drug_of_interest)
       cont$label <- cont$`Majority protein IDs`
       
       load.plsda <- rbind(load.plsda, cont)
       
-      load.plsda$`comp 1` <- load.plsda$`comp 1`
+      load.plsda$`comp1` <- load.plsda$`comp1`
       
       info <- df()
       info <- info[,c(1:5)]
@@ -197,7 +197,7 @@ server <- function(input, output){
       g <- ggplot(load.plsda) +
         geom_hline(yintercept = 0) +
         geom_vline(xintercept = 0) +
-        geom_point(aes(x = `comp 1`, y = `comp 2`, colour = `label`, group = `ID`, size = `pointsize`), alpha = 0.5) +
+        geom_point(aes(x = `comp1`, y = `comp2`, colour = `label`, group = `ID`, size = `pointsize`), alpha = 0.5) +
         theme_classic()+
         theme(legend.position = 'none')
       
@@ -284,7 +284,7 @@ server <- function(input, output){
     load.plsda <- plsda.df()
     if(is.data.frame(load.plsda)){
       d <- load.plsda %>%
-        dplyr::arrange(`comp 1`) %>%
+        dplyr::arrange(`comp1`) %>%
         dplyr::filter(label == 'Protein') %>%
         dplyr::select(-label)
       
