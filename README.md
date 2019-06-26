@@ -11,7 +11,7 @@ Generation of the PLS-DA model will usually take less than 1 min, however with i
 
 ## Software Requirements
 ### OS Requirements
-This package was develop under *Windows 7* running *R version 3.5.3* and was succesfully tested also on *Mac OSX* and *Windows 8*.
+This package was develop under *Windows 7* running *R version 3.6* and was succesfully tested also on *Mac OSX* and *Windows 8*.
 
 ### R Dependencies
 The ProTargetMiner package depends on the follwing R packages (with version):
