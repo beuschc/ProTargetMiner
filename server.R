@@ -348,8 +348,8 @@ server <- function(input, output){
  
   
   #link to paper
-  url <- a('ProTargetMiner: A proteome signature library of anticancer molecules for functional discovery',
-           href = 'https://www.biorxiv.org/content/10.1101/421115v1')
+  url <- a('ProTargetMiner as a proteome signature library of anticancer molecules for functional discovery',
+           href = 'https://www.nature.com/articles/s41467-019-13582-8')
   output$citation <- renderUI({
     tagList('Please cite:', url)
   })
